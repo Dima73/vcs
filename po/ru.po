@@ -1,0 +1,209 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-07-03 18:18+0300\n"
+"PO-Revision-Date: 2016-10-06 23:40+0300\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Last-Translator: Dimitrij <Dima-73@inbox.lv>\n"
+"Language-Team: \n"
+"X-Generator: Poedit 1.8.9\n"
+
+msgid "%s: Profile Selection"
+msgstr "%s: выбор профилей"
+
+msgid "%s: Profile Setup"
+msgstr "%s: настройка профилей"
+
+msgid "%s: video clipping switcher"
+msgstr "%s: авто переключение видео режимов"
+
+msgid "%s:Choise List"
+msgstr "%s:список выбора"
+
+msgid "16:10 Letterbox"
+msgstr "16:10 Letterbox"
+
+msgid "16:10 PanScan"
+msgstr "16:10 PanScan"
+
+msgid "16:9"
+msgstr "16:9"
+
+msgid "16:9 Letterbox"
+msgstr "16:9 Letterbox"
+
+msgid "16:9 always"
+msgstr "16:9 всегда"
+
+msgid "4:3 Letterbox"
+msgstr "4:3 Letterbox"
+
+msgid "4:3 PanScan"
+msgstr "4:3 PanScan"
+
+msgid "< / >"
+msgstr "< / >"
+
+msgid "Activate VCS"
+msgstr "Активировать VCS"
+
+msgid "Add"
+msgstr "Добавить"
+
+msgid "Add \"Choise list\" Blue Button to DVDPlayer"
+msgstr "\"Список выбора\" на синей кнопке в DVD плеере"
+
+msgid "Add \"Choise list\" Blue Button to MediaPlayer"
+msgstr "\"Список выбора\" на синей кнопке в Медиаплеере"
+
+msgid "Aspect Ratio"
+msgstr "Соотношение сторон"
+
+msgid "Auto switch profile on service 16:9"
+msgstr "Профиль авто переключения для сервиса 16:9"
+
+msgid "Auto switch profile on service 4:3"
+msgstr "Профиль авто переключения для сервиса 4:3"
+
+msgid "BOUQUET- / BOUQUET+"
+msgstr "BOUQUET- / BOUQUET+"
+
+msgid "Call %s plugin"
+msgstr "Настройки %s"
+
+msgid "Cancel"
+msgstr "Отмена"
+
+msgid "Default Mode"
+msgstr "Дефолтный режим"
+
+msgid "Default Profile"
+msgstr "Дефолтный профиль"
+
+msgid "Default profile on enigma startup"
+msgstr "Дефолтный профиль при старте энигма"
+
+msgid "Delay x seconds after service started"
+msgstr "Задержка в секундах после старта сервиса"
+
+msgid "Delete"
+msgstr "Удалить"
+
+msgid ""
+"Do you really want to delete profile:\n"
+" %s"
+msgstr ""
+"Вы действительно хотите удалить профиль:\n"
+" %s"
+
+msgid "Don't use video clipping"
+msgstr "Не использовать видео клиппинг"
+
+msgid "Enable Profile"
+msgstr "Включить профиль"
+
+msgid "Examples:"
+msgstr "Примеры профилей:"
+
+msgid "Exit"
+msgstr "Выход"
+
+msgid "GREEN"
+msgstr "GREEN"
+
+msgid "HELP"
+msgstr "HELP"
+
+msgid "Message timeout on switch profiles"
+msgstr "Таймаут сообщения при смене профилей"
+
+msgid "Move Down"
+msgstr "Вниз"
+
+msgid "Move Up"
+msgstr "Вверх"
+
+msgid "NONE"
+msgstr "NONE"
+
+msgid "None"
+msgstr "None"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Plugin quick button(s)"
+msgstr "Быстрая кнопка(и)"
+
+msgid "Profile "
+msgstr "Профиль "
+
+msgid "Profile %d"
+msgstr "Профиль %d"
+
+msgid "Profile Name"
+msgstr "Название профиля"
+
+msgid "Quick button(s) action"
+msgstr "Выбор режима быстрой кнопки"
+
+msgid "RADIO"
+msgstr "RADIO"
+
+msgid "Set slider step (1 - 20):"
+msgstr "Установите размер шага (1 - 20):"
+
+msgid "Show \"Choise list\" in extensions menu"
+msgstr "Показать \"Список выбора\" в меню дополнений"
+
+msgid "TEXT"
+msgstr "TEXT"
+
+msgid "TEXT / HELP"
+msgstr "TEXT / HELP"
+
+msgid "TV"
+msgstr "TV"
+
+msgid "Use Video Stretch (3D content)"
+msgstr "Использовать режим растяжения (3D контент)"
+
+msgid "Video Height"
+msgstr "Высота"
+
+msgid "Video Left"
+msgstr "Лево"
+
+msgid "Video Top"
+msgstr "Вверх"
+
+msgid "Video Width"
+msgstr "Ширина"
+
+msgid "YELLOW"
+msgstr "YELLOW"
+
+msgid "no"
+msgstr "нет"
+
+msgid "show choise box"
+msgstr "показать список выбора"
+
+msgid "switch profiles"
+msgstr "переключение профилей"
+
+msgid "video clipping switcher"
+msgstr "авто переключение видео режимов"
+
+msgid "yes, except '4:3 PanScan'"
+msgstr "да, исключение '4:3 PanScan'"
+
+msgid "Auto aspect ratio for service 4:3 AVC/MPEG4"
+msgstr "Авто соотношение сторон для сервиса 4:3 AVC/MPEG4"
+
+msgid "Force update aspect ratio when start video"
+msgstr "Авто обновление соотношения сторон при старте видео"
