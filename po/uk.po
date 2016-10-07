@@ -1,0 +1,209 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-07-03 18:18+0300\n"
+"PO-Revision-Date: 2016-10-07 14:11+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Last-Translator: vovan43 <vovan43@ex.ua>\n"
+"Language-Team: Dima-73@inbox.lv\n"
+"Language: uk_UA\n"
+"X-Generator: Poedit 1.7.5\n"
+
+msgid "%s: Profile Selection"
+msgstr "%s: Вибір профіля"
+
+msgid "%s: Profile Setup"
+msgstr "%s: Налаштування профіля"
+
+msgid "%s: video clipping switcher"
+msgstr "%s: авто переключення відео режимів"
+
+msgid "%s:Choise List"
+msgstr "%s:Список вибору"
+
+msgid "16:10 Letterbox"
+msgstr "16:10 Letterbox"
+
+msgid "16:10 PanScan"
+msgstr "16:10 PanScan"
+
+msgid "16:9"
+msgstr "16:9"
+
+msgid "16:9 Letterbox"
+msgstr "16:9 Letterbox"
+
+msgid "16:9 always"
+msgstr "16:9 завжди"
+
+msgid "4:3 Letterbox"
+msgstr "4:3 Letterbox"
+
+msgid "4:3 PanScan"
+msgstr "4:3 PanScan"
+
+msgid "< / >"
+msgstr "< / >"
+
+msgid "Activate VCS"
+msgstr "Активувати VCS"
+
+msgid "Add"
+msgstr "Добавити"
+
+msgid "Add \"Choise list\" Blue Button to DVDPlayer"
+msgstr "\"Список вибору\" на синій кнопці в DVD плеєрі"
+
+msgid "Add \"Choise list\" Blue Button to MediaPlayer"
+msgstr "\"Список вибору\" на синій кнопці в Медіаплеєрі"
+
+msgid "Aspect Ratio"
+msgstr "Співвідношення сторін"
+
+msgid "Auto aspect ratio for service 4:3 AVC/MPEG4"
+msgstr "Авто співвідношеня сторін для сервіса 4:3 AVC/MPEG4"
+
+msgid "Auto switch profile on service 16:9"
+msgstr "Профіль авто переключання для сервіса 16:9"
+
+msgid "Auto switch profile on service 4:3"
+msgstr "Профіль авто переключання для сервіса 4:3"
+
+msgid "BOUQUET- / BOUQUET+"
+msgstr "BOUQUET- / BOUQUET+"
+
+msgid "Call %s plugin"
+msgstr "Налаштування %s"
+
+msgid "Cancel"
+msgstr "Відміна"
+
+msgid "Default Mode"
+msgstr "Дефолтний режим"
+
+msgid "Default Profile"
+msgstr "Дефолтний профіль"
+
+msgid "Default profile on enigma startup"
+msgstr "Дефолтний профіль при старті енігми"
+
+msgid "Delay x seconds after service started"
+msgstr "Затримка в секундах після старта сервіса"
+
+msgid "Delete"
+msgstr "Видалити"
+
+msgid ""
+"Do you really want to delete profile:\n"
+" %s"
+msgstr ""
+"Ви справді бажаєте видалити профіль:\n"
+" %s"
+
+msgid "Don't use video clipping"
+msgstr "Не використовувати відео кліппінг"
+
+msgid "Enable Profile"
+msgstr "Включити профіль"
+
+msgid "Examples:"
+msgstr "Приклади профілів:"
+
+msgid "Exit"
+msgstr "Вихід"
+
+msgid "Force update aspect ratio when start video"
+msgstr "Авто оновлення співвідношення сторін при старті відео"
+
+msgid "GREEN"
+msgstr "GREEN"
+
+msgid "HELP"
+msgstr "HELP"
+
+msgid "Message timeout on switch profiles"
+msgstr "Таймаут повідомлення при зміні профілю"
+
+msgid "Move Down"
+msgstr "Вниз"
+
+msgid "Move Up"
+msgstr "Вверх"
+
+msgid "NONE"
+msgstr "NONE"
+
+msgid "None"
+msgstr "None"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Plugin quick button(s)"
+msgstr "Швидка кнопка(і)"
+
+msgid "Profile "
+msgstr "Профіль "
+
+msgid "Profile %d"
+msgstr "Профіль %d"
+
+msgid "Profile Name"
+msgstr "Назва профілю"
+
+msgid "Quick button(s) action"
+msgstr "Вибір режиму швидкої кнопки"
+
+msgid "RADIO"
+msgstr "RADIO"
+
+msgid "Set slider step (1 - 20):"
+msgstr "Встановіть розмір кроку (1 - 20):"
+
+msgid "Show \"Choise list\" in extensions menu"
+msgstr "Показати \"Список вибору\" в меню доповнень"
+
+msgid "TEXT"
+msgstr "TEXT"
+
+msgid "TEXT / HELP"
+msgstr "TEXT / HELP"
+
+msgid "TV"
+msgstr "TV"
+
+msgid "Use Video Stretch (3D content)"
+msgstr "Використовувати режим розтягнення (3D контент)"
+
+msgid "Video Height"
+msgstr "Висота"
+
+msgid "Video Left"
+msgstr "Зліва"
+
+msgid "Video Top"
+msgstr "Вверх"
+
+msgid "Video Width"
+msgstr "Ширина"
+
+msgid "YELLOW"
+msgstr "YELLOW"
+
+msgid "no"
+msgstr "ні"
+
+msgid "show choise box"
+msgstr "показати список вибору"
+
+msgid "switch profiles"
+msgstr "переключення профілів"
+
+msgid "video clipping switcher"
+msgstr "авто переключення відео режимів"
+
+msgid "yes, except '4:3 PanScan'"
+msgstr "так, виняток '4:3 PanScan'"
