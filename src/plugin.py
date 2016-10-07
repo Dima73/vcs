@@ -89,7 +89,7 @@ config.plugins.VCS.dvd_menu = ConfigYesNo(False)
 config.plugins.VCS.media_player = ConfigYesNo(False)
 config.plugins.VCS.vu_avc43 = ConfigYesNo(False)
 config.plugins.VCS.vu_start_video = ConfigSelection([("no",_("no")),("yes",_("yes")), ("yes_except",_("yes, except '4:3 PanScan'"))], "no")
-if BOX_MODEL != "vuplus":
+if BOX_MODEL != "vuplus" or not config.plugins.VCS.enabled.value:
 	config.plugins.VCS.vu_start_video.value = "no"
 	config.plugins.VCS.vu_start_video.save()
 	config.plugins.VCS.vu_avc43.value = False
