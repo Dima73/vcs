@@ -254,7 +254,7 @@ def setSeekState(self, state):
 			else:
 				fix_aspect = True
 			vu_start_video = config.plugins.VCS.vu_start_video.value
-			if vu_start_video != "no" and fix_aspect and (vu_start_video == "yes" or config.av.policy_43.value != "panscan"):
+			if  config.plugins.VCS.enabled.value and vu_start_video != "no" and fix_aspect and (vu_start_video == "yes" or config.av.policy_43.value != "panscan"):
 				if not hasattr(self, "updateAspectTimer"):
 					self.updateAspectTimer = eTimer()
 					self.updateAspectTimer.callback.append(self.updateAspect)
