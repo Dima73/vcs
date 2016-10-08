@@ -23,7 +23,7 @@ from Components.ActionMap import ActionMap
 from Tools.Directories import fileExists
 from Tools.HardwareInfo import HardwareInfo
 from Screens.InfoBarGenerics import InfoBarSeek
-from enigma import eTimer
+from enigma import eTimer, iServiceInformation
 
 BOX_MODEL = "none"
 BOX_NAME = ""
@@ -74,7 +74,7 @@ elif HardwareInfo().get_device_name().startswith('dm') and fileExists("/proc/stb
 	except:
 		pass
 
-from VCS import InitVcsProfile, VcsInfoBar, VcsSetupScreen, VcsInfoBarKeys, VcsChoiseList
+from VCS import InitVcsProfile, VcsInfoBar, VcsSetupScreen, VcsInfoBarKeys, VcsChoiseList, setAspect
 
 config.plugins.VCS = ConfigSubsection()
 config.plugins.VCS.enabled = ConfigEnableDisable(True)
@@ -88,7 +88,7 @@ config.plugins.VCS.ext_menu = ConfigYesNo(False)
 config.plugins.VCS.dvd_menu = ConfigYesNo(False)
 config.plugins.VCS.media_player = ConfigYesNo(False)
 config.plugins.VCS.vu_avc43 = ConfigYesNo(False)
-config.plugins.VCS.vu_start_video = ConfigSelection([("no",_("no")),("yes",_("yes")), ("yes_except",_("yes, except '4:3 PanScan'"))], "no")
+config.plugins.VCS.vu_start_video = ConfigSelection([("no",_("no")),("yes",_("yes")), ("yes_except",_("yes, except '4:3 PanScan'")),("4_3_letterbox",_("use ") + _("Letterbox")),("4_3_panscan",_("use ") + _("PanScan"))], "no")
 if BOX_MODEL != "vuplus" or not config.plugins.VCS.enabled.value:
 	config.plugins.VCS.vu_start_video.value = "no"
 	config.plugins.VCS.vu_start_video.save()
@@ -223,13 +223,30 @@ def autostart(reason, **kwargs):
 			InfoBarSeek.updateAspect = updateAspect
 
 def updateAspect(self):
-	# write in the policy2 the same value to set the correct aspect on >16:9
-	try:
-		policy = open("/proc/stb/video/policy2", "r").read()[:-1]
-		open("/proc/stb/video/policy2", "w").write(policy)
-		print "[VCS] force update video aspect ", policy
-	except IOError:
-		pass
+	vu_start_video = config.plugins.VCS.vu_start_video.value
+	if vu_start_video == "4_3_letterbox" or vu_start_video == "4_3_panscan":
+		service = self.session.nav.getCurrentService()
+		if service:
+			info = service and service.info()
+			serviceInfo = service.info()
+			xres = serviceInfo.getInfo(iServiceInformation.sVideoWidth)
+			yres = serviceInfo.getInfo(iServiceInformation.sVideoHeight)
+			if xres > 0 and yres > 0:
+				ratio = xres / yres
+				if ratio >= 1.78:
+					if vu_start_video == "4_3_letterbox":
+						aspectnum = 0
+					else:
+						aspectnum = 1
+					print "[VCS] force set video aspect ", vu_start_video
+					setAspect(aspectnum)
+	else:
+		try:
+			policy = open("/proc/stb/video/policy2", "r").read()[:-1]
+			open("/proc/stb/video/policy2", "w").write(policy)
+			print "[VCS] force update video aspect ", policy
+		except IOError:
+			pass
 
 def setSeekState(self, state):
 	prev_state = state
@@ -254,7 +271,7 @@ def setSeekState(self, state):
 			else:
 				fix_aspect = True
 			vu_start_video = config.plugins.VCS.vu_start_video.value
-			if  config.plugins.VCS.enabled.value and vu_start_video != "no" and fix_aspect and (vu_start_video == "yes" or config.av.policy_43.value != "panscan"):
+			if  config.plugins.VCS.enabled.value and vu_start_video != "no" and fix_aspect and not (vu_start_video == "yes_except" and config.av.policy_43.value == "panscan"):
 				if not hasattr(self, "updateAspectTimer"):
 					self.updateAspectTimer = eTimer()
 					self.updateAspectTimer.callback.append(self.updateAspect)

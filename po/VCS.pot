@@ -289,3 +289,12 @@ msgstr ""
 #: plugin.py:91
 msgid "yes, except '4:3 PanScan'"
 msgstr ""
+
+msgid "PanScan"
+msgstr ""
+
+msgid "Letterbox"
+msgstr ""
+
+msgid "use "
+msgstr ""

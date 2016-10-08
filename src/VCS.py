@@ -660,7 +660,7 @@ class VcsInfoBar:
 		start_profile = False
 		if auto_service_43 == -1 and auto_service_169 == -1 or auto_service_43 == auto_service_169:
 			start_profile = True
-		if start_profile and config.plugins.VCS.enabled.value:
+		if start_profile and config.plugins.VCS.enabled.value and config.plugins.VCS.default.value != -1:
 			if oe_mode:
 				self.start_delay_timer = eTimer()
 				self.start_delay_timer.callback.append(self.delaySwitchMode)
