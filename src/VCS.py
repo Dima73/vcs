@@ -697,7 +697,7 @@ class VcsInfoBar:
 		return 0
 
 	def switchMode(self, direction):
-		if not config.plugins.VCS.default.value in range(config.plugins.VCS.pfs_count.value):
+		if config.plugins.VCS.default.value != -1 and not config.plugins.VCS.default.value in range(config.plugins.VCS.pfs_count.value):
 			if self.defaultMode is None:
 				self.defaultMode = InitVcsProfile(name=_("Default Mode"))
 			modeslist = [ self.defaultMode ]
@@ -715,7 +715,7 @@ class VcsInfoBar:
 		setAspect(profile.aspect.value)
 		setClipRect(profile.cliprect.value)
 		if int(config.plugins.VCS.msgtime.value):
-			msg = '%s\n%s\n%s' % (profile.name.value, getAspectString(profile.aspect.value), _clipping  and not config.plugins.VCS.dont_use_clip.value and profile.cliprect.value or "")
+			msg = '%s\n%s\n%s' % (profile.name.value, getAspectString(profile.aspect.value), _clipping and not config.plugins.VCS.dont_use_clip.value and profile.cliprect.value or "")
 			if self.msgbox is None:
 				self.msgbox = self.session.instantiateDialog(VcsMessageBox)
 			self.msgbox.showMessage(msg, int(config.plugins.VCS.msgtime.value))
