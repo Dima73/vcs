@@ -23,7 +23,18 @@ from Components.ActionMap import ActionMap
 from Tools.Directories import fileExists
 from Tools.HardwareInfo import HardwareInfo
 from Screens.InfoBarGenerics import InfoBarSeek
-from enigma import eTimer, iServiceInformation
+from Screens.ChannelSelection import ChannelSelection, ChannelContextMenu, OFF, EDIT_BOUQUET, EDIT_ALTERNATIVES, MODE_TV, MODE_RADIO, service_types_tv, FLAG_SERVICE_NEW_FOUND
+from Components.ChoiceList import ChoiceEntryComponent
+from Tools.BoundFunction import boundFunction
+from enigma import eTimer, iServiceInformation, iPlayableService, eServiceReference, eDVBDB
+from Components.Converter.Converter import Converter
+from Components.Converter.ServiceInfo import ServiceInfo
+from Components.Element import cached
+import NavigationInstance
+
+FLAG_SERVICE_43_AVC = 2056
+
+WIDESCREEN = [3, 4, 7, 8, 0xB, 0xC, 0xF, 0x10]
 
 BOX_MODEL = "none"
 BOX_NAME = ""
@@ -191,14 +202,40 @@ def MediaPlayer__init__(self, session, args = None):
 baseInfoBar__init__ = None
 auto_vcs = None
 base_setSeekState = None
+baseServiceInfo_getBoolean = None
+origChannelContextMenu__init__ = None
 
 def newInfoBar__init__(self, session):
 	baseInfoBar__init__(self, session)
 	self.vcsinfobar = VcsInfoBar(session, self)
 
+@cached
+def getBoolean(self):
+	service = self.source.service
+	info = service and service.info()
+	if not info:
+		return False
+	if config.plugins.VCS.vu_avc43.value and self.type in (self.IS_WIDESCREEN, self.IS_SD_AND_WIDESCREEN, self.IS_SD_AND_NOT_WIDESCREEN):
+		aspect = info.getInfo(iServiceInformation.sAspect)
+		video_height = info.getInfo(iServiceInformation.sVideoHeight)
+		if 0 < video_height < 720 and info.getInfo(iServiceInformation.sVideoType) == 1 and aspect == 3:
+			if NavigationInstance.instance:
+				playref = NavigationInstance.instance.getCurrentlyPlayingServiceReference()
+				if playref and eDVBDB.getInstance().getFlag(eServiceReference(playref.toString())) & FLAG_SERVICE_43_AVC:
+					aspect = 1
+		if self.type == self.IS_WIDESCREEN:
+			return aspect in WIDESCREEN
+		elif self.type == self.IS_SD_AND_WIDESCREEN:
+			return video_height < 720 and aspect in WIDESCREEN
+		elif self.type == self.IS_SD_AND_NOT_WIDESCREEN:
+			return video_height < 720 and aspect not in WIDESCREEN
+		return False
+	else:
+		return baseServiceInfo_getBoolean(self)
+
 def autostart(reason, **kwargs):
 	if reason == 0:
-		global baseInfoBar__init__ , auto_vcs, base_setSeekState
+		global baseInfoBar__init__ , auto_vcs, base_setSeekState, baseServiceInfo_getBoolean, origChannelContextMenu__init__
 		from Screens.InfoBar import InfoBar
 		if baseInfoBar__init__ is None:
 			baseInfoBar__init__ = InfoBar.__init__
@@ -221,13 +258,72 @@ def autostart(reason, **kwargs):
 			base_setSeekState = InfoBarSeek.setSeekState
 			InfoBarSeek.setSeekState = setSeekState
 			InfoBarSeek.updateAspect = updateAspect
+		if BOX_MODEL == "vuplus" and baseServiceInfo_getBoolean is None:
+			baseServiceInfo_getBoolean = ServiceInfo.getBoolean
+			ServiceInfo.getBoolean = getBoolean
+			ServiceInfo.boolean = property(getBoolean)
+		if BOX_MODEL == "vuplus" and origChannelContextMenu__init__ is None:
+			origChannelContextMenu__init__ = ChannelContextMenu.__init__
+			ChannelContextMenu.__init__ = VCSChannelContextMenu__init__
+			ChannelContextMenu.addFlag43SDservice = addFlag43SDservice
+			ChannelContextMenu.removeFlag43SDservice = removeFlag43SDservice
+
+def VCSChannelContextMenu__init__(self, session, csel):
+	origChannelContextMenu__init__(self, session, csel)
+	if csel.mode == MODE_TV and csel.bouquet_mark_edit == OFF and not csel.movemode:
+		self.csel = csel
+		current = csel.getCurrentSelection()
+		current_root = csel.getRoot()
+		current_sel_path = current.getPath()
+		current_sel_flags = current.flags
+		inBouquetRootList = current_root and current_root.getPath().find('FROM BOUQUET "bouquets.') != -1
+		inBouquet = csel.getMutableList() is not None
+		isPlayable = not (current_sel_flags & (eServiceReference.isMarker|eServiceReference.isDirectory|eServiceReference.isGroup))
+		self.current_ref = session.nav.getCurrentlyPlayingServiceReference()
+		if isPlayable and current and current.valid() and not current_sel_path and self.current_ref == current:
+			str_service = self.current_ref.toString()
+			if '%3a//' not in str_service and not str_service.rsplit(":", 1)[1].startswith("/"):
+				if eDVBDB.getInstance().getFlag(eServiceReference(str_service)) & FLAG_SERVICE_43_AVC:
+					self["menu"].list.insert(8, ChoiceEntryComponent(text = (_("Unmark service as 4:3 AVC/MPEG4"), boundFunction(self.removeFlag43SDservice,1))))
+				elif config.plugins.VCS.vu_avc43.value and self.current_ref and self.current_ref == current:
+					service = session.nav.getCurrentService()
+					if service:
+						info = service.info()
+						if info:
+							aspect = info.getInfo(iServiceInformation.sAspect)
+							video_height = info.getInfo(iServiceInformation.sVideoHeight)
+							if 0 < video_height < 720 and info.getInfo(iServiceInformation.sVideoType) == 1 and aspect == 3:
+								self["menu"].list.insert(8, ChoiceEntryComponent(text = (_("Mark service as 4:3 AVC/MPEG4"), boundFunction(self.addFlag43SDservice,1))))
+
+def addFlag43SDservice(self, answer=None):
+	if NavigationInstance.instance:
+		playref = NavigationInstance.instance.getCurrentlyPlayingServiceReference()
+		if playref:
+			eDVBDB.getInstance().addFlag(eServiceReference(self.csel.getCurrentSelection().toString()), FLAG_SERVICE_43_AVC)
+			eDVBDB.getInstance().reloadBouquets()
+			try:
+				NavigationInstance.instance.pnav.navEvent(iPlayableService.evVideoSizeChanged)
+			except:
+				pass
+	self.close()
+
+def removeFlag43SDservice(self, answer=None):
+	eDVBDB.getInstance().removeFlag(eServiceReference(self.csel.getCurrentSelection().toString()), FLAG_SERVICE_43_AVC)
+	if NavigationInstance.instance:
+		playref = NavigationInstance.instance.getCurrentlyPlayingServiceReference()
+		if playref and playref == self.csel.getCurrentSelection():
+			eDVBDB.getInstance().reloadBouquets()
+			try:
+				NavigationInstance.instance.pnav.navEvent(iPlayableService.evVideoSizeChanged)
+			except:
+				pass
+	self.close()
 
 def updateAspect(self):
 	vu_start_video = config.plugins.VCS.vu_start_video.value
 	if vu_start_video == "4_3_letterbox" or vu_start_video == "4_3_panscan":
 		service = self.session.nav.getCurrentService()
 		if service:
-			info = service and service.info()
 			serviceInfo = service.info()
 			xres = serviceInfo.getInfo(iServiceInformation.sVideoWidth)
 			yres = serviceInfo.getInfo(iServiceInformation.sVideoHeight)
