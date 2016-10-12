@@ -829,6 +829,8 @@ class AutoVCS(Screen):
 			self.newService = False
 
 	def __vcsVideoSizeChanged(self):
+		if not self.newService:
+			return
 		if not self.timer.isActive() or self.after_switch_delay:
 			self.timer.start(100, True)
 
