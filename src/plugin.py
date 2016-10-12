@@ -280,8 +280,8 @@ def VCSChannelContextMenu__init__(self, session, csel):
 		inBouquet = csel.getMutableList() is not None
 		isPlayable = not (current_sel_flags & (eServiceReference.isMarker|eServiceReference.isDirectory|eServiceReference.isGroup))
 		self.current_ref = session.nav.getCurrentlyPlayingServiceReference()
-		if isPlayable and current and current.valid() and not current_sel_path and self.current_ref == current:
-			str_service = self.current_ref.toString()
+		if isPlayable and current and current.valid() and not current_sel_path:
+			str_service = current.toString()
 			if '%3a//' not in str_service and not str_service.rsplit(":", 1)[1].startswith("/"):
 				if eDVBDB.getInstance().getFlag(eServiceReference(str_service)) & FLAG_SERVICE_43_AVC:
 					self["menu"].list.insert(8, ChoiceEntryComponent(text = (_("Unmark service as 4:3 AVC/MPEG4"), boundFunction(self.removeFlag43SDservice,1))))
