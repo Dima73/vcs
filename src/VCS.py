@@ -877,6 +877,10 @@ class AutoVCS(Screen):
 										if self.policy2 != policy_43:
 											open("/proc/stb/video/policy2", "w").write(policy_43)
 											print "[VCS] force update wrong 16:9 AVC as 4:3 AVC", policy_43
+											try:
+												self.session.nav.pnav.navEvent(iPlayableService.evVideoSizeChanged)
+											except:
+												pass
 									except IOError:
 										pass
 
@@ -889,6 +893,10 @@ class AutoVCS(Screen):
 		setStretch(int(profile.stretch.value))
 		setAspect(profile.aspect.value)
 		setClipRect(profile.cliprect.value)
+		try:
+			self.session.nav.pnav.navEvent(iPlayableService.evVideoSizeChanged)
+		except:
+			pass
 		if int(config.plugins.VCS.msgtime.value):
 			msg = '%s\n%s\n%s' % (profile.name.value, getAspectString(profile.aspect.value), _clipping  and not config.plugins.VCS.dont_use_clip.value and profile.cliprect.value or "")
 			if self.msgbox is None:
