@@ -845,6 +845,11 @@ class AutoVCS(Screen):
 	def ModeChanged(self):
 		self.timer.stop()
 		self.after_switch_delay = True
+		if BOX_MODEL == "vuplus":
+			try:
+				self.session.nav.pnav.navEvent(iPlayableService.evVideoSizeChanged)
+			except:
+				pass
 		if not config.plugins.VCS.enabled.value:
 			return
 		auto_service_43 = config.plugins.VCS.autoswitch_service_43.value
