@@ -32,11 +32,12 @@ from Components.Sources.StaticText import StaticText
 from Tools.BoundFunction import boundFunction
 from Tools.HardwareInfo import HardwareInfo
 try:
-	from Components.AVSwitch import iAVSwitch as newAVSwitch
-	oe_mode = True
-except:
+	from enigma import getBoxType
 	from Components.AVSwitch import AVSwitch as newAVSwitch
 	oe_mode = False
+except:
+	from Components.AVSwitch import iAVSwitch as newAVSwitch
+	oe_mode = True
 from Components.PluginComponent import plugins
 from Tools.Directories import resolveFilename, fileExists, SCOPE_SKIN, SCOPE_CURRENT_SKIN, SCOPE_PLUGINS
 from Tools.LoadPixmap import LoadPixmap
@@ -104,7 +105,6 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 		self["actions"] = ActionMap(["OkCancelActions", "ColorActions", "DirectionActions", "ChannelSelectEPGActions"],
 			{
 				"cancel": self.keyExit,
-				"ok": self.keyOk,
 				"showEPGList": self.showExamples,
 				"red": self.keyRed,
 				"green": self.keyGreen,
@@ -112,7 +112,8 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 				"blue": boundFunction(self.moveEntry, +1),
 				"up": self.keyUp,
 				"down": self.keyDown,
-			}, -1)
+				"ok": self.keyOK,
+			}, -2)
 		
 		self.onClose.append(self.__closed)
 		self.onLayoutFinish.append(self.__layoutFinished)
@@ -318,7 +319,7 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 	def keyGreen(self):
 		self.addEntry()
 
-	def keyOk(self):
+	def keyOK(self):
 		if self.focus == self.FOCUS_LIST:
 			self.editEntry()
 
@@ -909,4 +910,3 @@ class AutoVCS(Screen):
 			if self.msgbox is None:
 				self.msgbox = self.session.instantiateDialog(VcsMessageBox)
 			self.msgbox.showMessage(msg, int(config.plugins.VCS.msgtime.value))
- 
