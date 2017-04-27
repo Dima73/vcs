@@ -49,6 +49,13 @@ examples_sh = "/usr/lib/enigma2/python/Plugins/Extensions/VCS/examples.sh"
 _clipping = fileExists('/proc/stb/vmpeg/0/clip_left') and fileExists('/proc/stb/vmpeg/0/clip_top')
 _stretch = fileExists('/proc/stb/vmpeg/0/clip_stretch')
 
+def isMovieAspect_plugin():
+	try:
+		MovieAspect_plugin = config.plugins.movieaspect.enabled
+	except:
+		MovieAspect_plugin = None
+	return MovieAspect_plugin
+
 class VcsSetupScreen(Screen, ConfigListScreen):
 
 	skin = """
@@ -199,7 +206,8 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 			]
 		if BOX_MODEL == "vuplus":
 			cfglist.append(getConfigListEntry(_("Auto aspect ratio for service 4:3 AVC/MPEG4"), config.plugins.VCS.vu_avc43))
-			cfglist.append(getConfigListEntry(_("Force update aspect ratio when start video"), config.plugins.VCS.vu_start_video))
+			if isMovieAspect_plugin() is None or config.plugins.movieaspect.enabled.value == "no":
+				cfglist.append(getConfigListEntry(_("Force update aspect ratio when start video"), config.plugins.VCS.vu_start_video))
 		if BOX_NAME.startswith('et') and not BOX_NAME.startswith('et9'):
 			cfglist.append(getConfigListEntry(_("Don't use video clipping"), config.plugins.VCS.dont_use_clip))
 		if fileExists("/usr/lib/enigma2/python/Screens/DVD.pyo"):
@@ -853,6 +861,17 @@ class AutoVCS(Screen):
 				pass
 		if not config.plugins.VCS.enabled.value:
 			return
+		if isMovieAspect_plugin() is not None and config.plugins.movieaspect.enabled.value != "no":
+			ref = self.session.nav.getCurrentlyPlayingServiceReference()
+			if ref:
+				str_service = ref.toString()
+				stream_service = '%3a//' in str_service 
+				movie_service = str_service.rsplit(":", 1)[1].startswith("/")
+				if stream_service or movie_service:
+					action = config.plugins.movieaspect.enabled.value
+					if action == "yes" or (action == "video" and stream_service) or (action == "movie" and movie_service):
+						print "[VCS] stop - using setup plugin MovieAspect"
+						return
 		auto_service_43 = config.plugins.VCS.autoswitch_service_43.value
 		auto_service_169 = config.plugins.VCS.autoswitch_service_169.value
 		if auto_service_43 != -1 or auto_service_169 != -1 or config.plugins.VCS.vu_avc43.value:

@@ -36,6 +36,14 @@ FLAG_SERVICE_43_AVC = 2056
 
 WIDESCREEN = [3, 4, 7, 8, 0xB, 0xC, 0xF, 0x10]
 
+def isMovieAspect_plugin():
+	try:
+		MovieAspect_plugin = config.plugins.movieaspect.enabled
+	except:
+		MovieAspect_plugin = None
+	return MovieAspect_plugin
+
+
 BOX_MODEL = "none"
 BOX_NAME = ""
 if fileExists("/proc/stb/info/boxtype"):
@@ -139,9 +147,8 @@ def DVDPlayer__init__(self, session, dvd_device = None, dvd_filelist = [ ], args
 	baseDVDPlayer__init__(self, session, dvd_device, dvd_filelist, args)
 	if config.plugins.VCS.dvd_menu.value:
 		def showVCS():
-			from Plugins.Extensions.VCS.plugin import show_choisebox
 			VcsChoiseList(session)
-		
+
 		self["ColorActions"] = ActionMap(["ColorActions"],
 				{
 					"blue": showVCS,
@@ -179,7 +186,6 @@ def MoviePlayer__init__(self, session, service):
 	baseMoviePlayer__init__(self, session, service)
 	if config.plugins.VCS.media_player.value:
 		def showVCS():
-			from Plugins.Extensions.VCS.plugin import show_choisebox
 			VcsChoiseList(session)
 
 		self["ColorActions"] = ActionMap(["ColorActions"],
@@ -191,9 +197,8 @@ def MediaPlayer__init__(self, session, args = None):
 	baseMediaPlayer__init__(self, session, args)
 	if config.plugins.VCS.media_player.value:
 		def showVCS():
-			from Plugins.Extensions.VCS.plugin import show_choisebox
 			VcsChoiseList(session)
-		
+
 		self["ColorActions"] = ActionMap(["ColorActions"],
 				{
 					"blue": showVCS,
@@ -367,7 +372,10 @@ def setSeekState(self, state):
 			else:
 				fix_aspect = True
 			vu_start_video = config.plugins.VCS.vu_start_video.value
-			if  config.plugins.VCS.enabled.value and vu_start_video != "no" and fix_aspect and not (vu_start_video == "yes_except" and config.av.policy_43.value == "panscan"):
+			if config.plugins.VCS.enabled.value and vu_start_video != "no" and fix_aspect and not (vu_start_video == "yes_except" and config.av.policy_43.value == "panscan"):
+				if isMovieAspect_plugin() is not None and config.plugins.movieaspect.enabled.value != "no":
+					print "[VCS] stop - using setup plugin MovieAspect"
+					return
 				if not hasattr(self, "updateAspectTimer"):
 					self.updateAspectTimer = eTimer()
 					self.updateAspectTimer.callback.append(self.updateAspect)
@@ -390,5 +398,3 @@ def Plugins(**kwargs):
 	else:
 		return [PluginDescriptor(where = [PluginDescriptor.WHERE_SESSIONSTART,PluginDescriptor.WHERE_AUTOSTART], fnc = autostart),
 			PluginDescriptor(name=PLUGIN_NAME, description=desc, where=PluginDescriptor.WHERE_PLUGINMENU, icon="vcs.png", fnc=main)]
-	
-
