@@ -220,7 +220,9 @@ def getBoolean(self):
 	info = service and service.info()
 	if not info:
 		return False
-	if config.plugins.VCS.vu_avc43.value and self.type in (self.IS_WIDESCREEN, self.IS_SD_AND_WIDESCREEN, self.IS_SD_AND_NOT_WIDESCREEN):
+	is_sd_and_not_widescreen = hasattr(self, "IS_SD_AND_NOT_WIDESCREEN") and self.type == self.IS_SD_AND_NOT_WIDESCREEN
+	is_sd_and_widescreen = hasattr(self, "IS_SD_AND_WIDESCREEN") and self.type == self.IS_SD_AND_WIDESCREEN
+	if config.plugins.VCS.vu_avc43.value and (self.type == self.IS_WIDESCREEN or is_sd_and_widescreen or is_sd_and_not_widescreen):
 		aspect = info.getInfo(iServiceInformation.sAspect)
 		video_height = info.getInfo(iServiceInformation.sVideoHeight)
 		if 0 < video_height < 720 and info.getInfo(iServiceInformation.sVideoType) == 1 and aspect == 3:
@@ -230,9 +232,9 @@ def getBoolean(self):
 					aspect = 1
 		if self.type == self.IS_WIDESCREEN:
 			return aspect in WIDESCREEN
-		elif self.type == self.IS_SD_AND_WIDESCREEN:
+		elif is_sd_and_widescreen:
 			return video_height < 720 and aspect in WIDESCREEN
-		elif self.type == self.IS_SD_AND_NOT_WIDESCREEN:
+		elif is_sd_and_not_widescreen:
 			return video_height < 720 and aspect not in WIDESCREEN
 		return False
 	else:
