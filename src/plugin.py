@@ -243,10 +243,11 @@ def getBoolean(self):
 def autostart(reason, **kwargs):
 	if reason == 0:
 		global baseInfoBar__init__ , auto_vcs, base_setSeekState, baseServiceInfo_getBoolean, origChannelContextMenu__init__
-		from Screens.InfoBar import InfoBar
-		if baseInfoBar__init__ is None:
-			baseInfoBar__init__ = InfoBar.__init__
-		InfoBar.__init__ = newInfoBar__init__
+		if config.plugins.VCS.enabled.value and config.plugins.VCS.hotkey.value != "none":
+			from Screens.InfoBar import InfoBar
+			if baseInfoBar__init__ is None:
+				baseInfoBar__init__ = InfoBar.__init__
+			InfoBar.__init__ = newInfoBar__init__
 		if "session" in kwargs and auto_vcs is None:
 			session = kwargs["session"]
 			from VCS import AutoVCS

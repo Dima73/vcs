@@ -45,6 +45,8 @@ from Components.ServiceEventTracker import ServiceEventTracker
 from enigma import iPlayableService, iServiceInformation, eTimer, eAVSwitch
 import os
 
+WarningMessage = False
+
 examples_sh = "/usr/lib/enigma2/python/Plugins/Extensions/VCS/examples.sh"
 _clipping = fileExists('/proc/stb/vmpeg/0/clip_left') and fileExists('/proc/stb/vmpeg/0/clip_top')
 _stretch = fileExists('/proc/stb/vmpeg/0/clip_stretch')
@@ -320,6 +322,15 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 			self.keyExit()
 
 	def keyExit(self):
+		if config.plugins.VCS.enabled.value and config.plugins.VCS.hotkey.value != "none":
+			try:
+				HZhotkey = config.plugins.SetupZapSelector.start.value and config.plugins.SetupZapSelector.replace_keys.value != "none"
+			except:
+				HZhotkey = False
+			if HZhotkey and not WarningMessage:
+				global WarningMessage
+				WarningMessage = True
+				self.session.open(MessageBox, _("Warning!\n'HistoryZapSelector' plugin hotkey need disabled!\n"), MessageBox.TYPE_INFO, timeout = 5)
 		if self.prev_ext_menu != config.plugins.VCS.ext_menu.value:
 			plugins.readPluginList(resolveFilename(SCOPE_PLUGINS))
 		self.close()

@@ -304,3 +304,6 @@ msgstr ""
 
 msgid "Unmark service as 4:3 AVC/MPEG4"
 msgstr ""
+
+msgid "Warning!\n'HistoryZapSelector' plugin hotkey need disabled!\n"
+msgstr ""

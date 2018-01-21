@@ -222,3 +222,7 @@ msgstr "Маркировать сервис как 4:3 AVC/MPEG4"
 
 msgid "Unmark service as 4:3 AVC/MPEG4"
 msgstr "Удалить маркировку сервиса как 4:3 AVC/MPEG4"
+
+msgid "Warning!\n'HistoryZapSelector' plugin hotkey need disabled!\n"
+msgstr "Внимание!\nГорячие кнопки плагина 'HistoryZapSelector' необходимо отключить!\n"
+
