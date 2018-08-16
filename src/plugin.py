@@ -21,7 +21,6 @@ from . import _, PLUGIN_NAME, PLUGIN_VERSION
 from Components.config import config, ConfigSubsection, ConfigSelection, ConfigSubList, ConfigInteger, ConfigYesNo, ConfigEnableDisable
 from Components.ActionMap import ActionMap
 from Tools.Directories import fileExists
-from Tools.HardwareInfo import HardwareInfo
 from Screens.InfoBarGenerics import InfoBarSeek
 from Screens.ChannelSelection import ChannelSelection, ChannelContextMenu, OFF, EDIT_BOUQUET, EDIT_ALTERNATIVES, MODE_TV, MODE_RADIO, service_types_tv, FLAG_SERVICE_NEW_FOUND
 from Components.ChoiceList import ChoiceEntryComponent
@@ -46,32 +45,7 @@ def isMovieAspect_plugin():
 
 BOX_MODEL = "none"
 BOX_NAME = ""
-if fileExists("/proc/stb/info/boxtype"):
-	try:
-		l = open("/proc/stb/info/boxtype")
-		model = l.read().strip()
-		l.close()
-		BOX_NAME = str(model.lower())
-		l.close()
-		if BOX_NAME.startswith('et'):
-			BOX_MODEL = "xtrend"
-		elif BOX_NAME.startswith('xp'):
-			BOX_MODEL = "xp"
-		elif BOX_NAME.startswith('formuler'):
-			BOX_MODEL = "formuler"
-		elif BOX_NAME.startswith('hd'):
-			BOX_MODEL = "hd"
-		elif BOX_NAME.startswith('osmini'):
-			BOX_MODEL = "edision"
-		elif BOX_NAME.startswith('7000S'):
-			BOX_MODEL = "miraclebox"
-		elif BOX_NAME.startswith('g300'):
-			BOX_MODEL = "miraclebox"
-		else:
-			BOX_MODEL = "useBoxtype"
-	except:
-		pass
-elif fileExists("/proc/stb/info/vumodel"):
+if fileExists("/proc/stb/info/vumodel") and fileExists("/etc/init.d/vuplus-platform-util") and not fileExists("/proc/stb/info/hwmodel") and not fileExists("/proc/stb/info/boxtype"):
 	try:
 		l = open("/proc/stb/info/vumodel")
 		model = l.read().strip()
@@ -79,17 +53,6 @@ elif fileExists("/proc/stb/info/vumodel"):
 		BOX_NAME = str(model.lower())
 		l.close()
 		BOX_MODEL = "vuplus"
-	except:
-		pass
-elif HardwareInfo().get_device_name().startswith('dm') and fileExists("/proc/stb/info/model"):
-	try:
-		l = open("/proc/stb/info/model")
-		model = l.read()
-		l.close()
-		BOX_NAME = str(model.lower())
-		l.close()
-		if BOX_NAME.startswith('dm'):
-			BOX_MODEL = "dreambox"
 	except:
 		pass
 
@@ -206,6 +169,7 @@ def MediaPlayer__init__(self, session, args = None):
 
 baseInfoBar__init__ = None
 auto_vcs = None
+vcsinfobar = None
 base_setSeekState = None
 baseServiceInfo_getBoolean = None
 origChannelContextMenu__init__ = None
@@ -242,12 +206,17 @@ def getBoolean(self):
 
 def autostart(reason, **kwargs):
 	if reason == 0:
-		global baseInfoBar__init__ , auto_vcs, base_setSeekState, baseServiceInfo_getBoolean, origChannelContextMenu__init__
-		if config.plugins.VCS.enabled.value and config.plugins.VCS.hotkey.value != "none":
-			from Screens.InfoBar import InfoBar
-			if baseInfoBar__init__ is None:
-				baseInfoBar__init__ = InfoBar.__init__
-			InfoBar.__init__ = newInfoBar__init__
+		global baseInfoBar__init__ , auto_vcs, base_setSeekState, baseServiceInfo_getBoolean, origChannelContextMenu__init__, vcsinfobar
+		if config.plugins.VCS.enabled.value:
+			if config.plugins.VCS.hotkey.value != "none":
+				from Screens.InfoBar import InfoBar
+				if baseInfoBar__init__ is None:
+					baseInfoBar__init__ = InfoBar.__init__
+				InfoBar.__init__ = newInfoBar__init__
+			elif "session" in kwargs and vcsinfobar is None:
+				import NavigationInstance
+				if NavigationInstance.instance:
+					vcsinfobar = VcsInfoBar(kwargs["session"], NavigationInstance.instance)
 		if "session" in kwargs and auto_vcs is None:
 			session = kwargs["session"]
 			from VCS import AutoVCS

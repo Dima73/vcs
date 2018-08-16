@@ -691,7 +691,8 @@ class VcsInfoBar:
 		self.hotkeys = { }
 		for x in VcsInfoBarKeys:
 			self.hotkeys[x[0]] = [KEYIDS[key] for key in x[2]]
-		eActionMap.getInstance().bindAction('', -10, self.keyPressed)
+		if infobar:
+			eActionMap.getInstance().bindAction('', -10, self.keyPressed)
 
 	def delaySwitchMode(self):
 		self.switchMode(0)

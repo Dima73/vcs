@@ -21,7 +21,7 @@ from Components.Language import language
 import os, gettext
 
 PLUGIN_NAME = "VCS"
-PLUGIN_VERSION = "2.7"
+PLUGIN_VERSION = "2.8"
 PLUGIN_PATH = os.path.dirname( __file__ )
 
 def localeInit():
