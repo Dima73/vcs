@@ -307,3 +307,6 @@ msgstr ""
 
 msgid "Warning!\n'HistoryZapSelector' plugin hotkey need disabled!\n"
 msgstr ""
+
+msgid "Restart default profile after standby"
+msgstr ""

@@ -55,11 +55,22 @@ if fileExists("/proc/stb/info/vumodel") and not fileExists("/proc/stb/info/hwmod
 		BOX_MODEL = "vuplus"
 	except:
 		pass
+if not fileExists("/proc/stb/info/hwmodel") and fileExists("/proc/stb/info/boxtype"):
+	try:
+		l = open("/proc/stb/info/boxtype")
+		model = l.read().strip()
+		l.close()
+		BOX_NAME = str(model.lower())
+		l.close()
+		BOX_MODEL = "all"
+	except:
+		pass
 
 from VCS import InitVcsProfile, VcsInfoBar, VcsSetupScreen, VcsInfoBarKeys, VcsChoiseList, setAspect
 
 config.plugins.VCS = ConfigSubsection()
 config.plugins.VCS.enabled = ConfigEnableDisable(True)
+config.plugins.VCS.restart_after_standby = ConfigYesNo(False)
 config.plugins.VCS.hotkey = ConfigSelection([(x[0],x[1]) for x in VcsInfoBarKeys], "none")
 config.plugins.VCS.hkaction = ConfigSelection([("switch",_("switch profiles")),("choise",_("show choise box"))], "switch")
 config.plugins.VCS.dont_use_clip = ConfigYesNo(default = BOX_NAME.startswith('et8500') and True or False)

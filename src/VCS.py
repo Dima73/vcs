@@ -202,6 +202,7 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 			getConfigListEntry(_("Show \"Choise list\" in extensions menu"), config.plugins.VCS.ext_menu),
 			getConfigListEntry(_("Message timeout on switch profiles"), config.plugins.VCS.msgtime),
 			getConfigListEntry(_("Default profile on enigma startup"), self.defprofile),
+			getConfigListEntry(_("Restart default profile after standby"), config.plugins.VCS.restart_after_standby),
 			getConfigListEntry(_("Auto switch profile on service 4:3"), self.auto_profile43),
 			getConfigListEntry(_("Auto switch profile on service 16:9"), self.auto_profile169),
 			getConfigListEntry(_("Delay x seconds after service started"), config.plugins.VCS.delay_switch_profile),
@@ -666,7 +667,8 @@ class VcsInfoBar:
 		self.infobar = infobar
 		self.msgbox = None
 		self.defaultMode = None
-
+		self.start_delay_timer = eTimer()
+		self.start_delay_timer.callback.append(self.delaySwitchMode)
 		if config.plugins.VCS.default.value in range(len(config.plugins.VCS.profiles)) and config.plugins.VCS.profiles[config.plugins.VCS.default.value].enabled.value:
 			self.currentMode = x = config.plugins.VCS.default.value
 			while x > 0:
@@ -681,9 +683,8 @@ class VcsInfoBar:
 		if auto_service_43 == -1 and auto_service_169 == -1 or auto_service_43 == auto_service_169:
 			start_profile = True
 		if start_profile and config.plugins.VCS.enabled.value and config.plugins.VCS.default.value != -1:
+			config.misc.standbyCounter.addNotifier(self.onEnterVCSStandby, initial_call=False)
 			if oe_mode:
-				self.start_delay_timer = eTimer()
-				self.start_delay_timer.callback.append(self.delaySwitchMode)
 				self.start_delay_timer.start(5000, True)
 			else:
 				self.switchMode(0)
@@ -693,6 +694,15 @@ class VcsInfoBar:
 			self.hotkeys[x[0]] = [KEYIDS[key] for key in x[2]]
 		if infobar:
 			eActionMap.getInstance().bindAction('', -10, self.keyPressed)
+
+	def onLeaveVCSStandby(self):
+		if config.plugins.VCS.enabled.value and config.plugins.VCS.restart_after_standby.value and config.plugins.VCS.default.value != -1:
+			self.start_delay_timer.start(3000, True)
+
+	def onEnterVCSStandby(self, configElement):
+		from Screens.Standby import inStandby
+		if self.onLeaveVCSStandby not in inStandby.onClose:
+			inStandby.onClose.append(self.onLeaveVCSStandby)
 
 	def delaySwitchMode(self):
 		self.switchMode(0)
