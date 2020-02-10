@@ -272,7 +272,7 @@ def VCSChannelContextMenu__init__(self, session, csel):
 			str_service = current.toString()
 			if '%3a//' not in str_service and not str_service.rsplit(":", 1)[1].startswith("/"):
 				if eDVBDB.getInstance().getFlag(eServiceReference(str_service)) & FLAG_SERVICE_43_AVC:
-					self["menu"].list.insert(8, ChoiceEntryComponent(text = (_("Unmark service as 4:3 AVC/MPEG4"), boundFunction(self.removeFlag43SDservice,1))))
+					self["menu"].list.insert(8, ChoiceEntryComponent(text = (_("Unmark service as 4:3 AVC/MPEG4"), boundFunction(self.removeFlag43SDservice,1)), key = "dummy"))
 				elif config.plugins.VCS.vu_avc43.value and self.current_ref and self.current_ref == current:
 					service = session.nav.getCurrentService()
 					if service:
@@ -281,7 +281,7 @@ def VCSChannelContextMenu__init__(self, session, csel):
 							aspect = info.getInfo(iServiceInformation.sAspect)
 							video_height = info.getInfo(iServiceInformation.sVideoHeight)
 							if 0 < video_height < 720 and info.getInfo(iServiceInformation.sVideoType) == 1 and aspect == 3:
-								self["menu"].list.insert(8, ChoiceEntryComponent(text = (_("Mark service as 4:3 AVC/MPEG4"), boundFunction(self.addFlag43SDservice,1))))
+								self["menu"].list.insert(8, ChoiceEntryComponent(text = (_("Mark service as 4:3 AVC/MPEG4"), boundFunction(self.addFlag43SDservice,1)), key = "dummy"))
 
 def addFlag43SDservice(self, answer=None):
 	if NavigationInstance.instance:
