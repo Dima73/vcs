@@ -18,7 +18,8 @@
 ###############################################################################
 
 from Components.Language import language
-import os, gettext
+import os
+import gettext
 
 PLUGIN_NAME = "VCS"
 PLUGIN_VERSION = "2.9"
