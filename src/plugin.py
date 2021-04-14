@@ -35,6 +35,7 @@ FLAG_SERVICE_43_AVC = 2056
 
 WIDESCREEN = [3, 4, 7, 8, 0xB, 0xC, 0xF, 0x10]
 
+
 def isMovieAspect_plugin():
 	try:
 		MovieAspect_plugin = config.plugins.movieaspect.enabled
@@ -110,12 +111,14 @@ else:
 
 baseDVDPlayer__init__ = None
 
+
 def DVDPlayerInit():
 	global baseDVDPlayer__init__
 	from Screens.DVD import DVDPlayer
 	if baseDVDPlayer__init__ is None:
 		baseDVDPlayer__init__ = DVDPlayer.__init__
 	DVDPlayer.__init__ = DVDPlayer__init__
+
 
 def DVDPlayer__init__(self, session, dvd_device=None, dvd_filelist=[], args=None):
 	baseDVDPlayer__init__(self, session, dvd_device, dvd_filelist, args)
@@ -128,8 +131,10 @@ def DVDPlayer__init__(self, session, dvd_device=None, dvd_filelist=[], args=None
 					"blue": showVCS,
 				}, -1)
 
+
 baseMediaPlayer__init__ = None
 baseMoviePlayer__init__ = None
+
 
 def MediaPlayerInit():
 	global baseMediaPlayer__init__, baseMoviePlayer__init__ 
@@ -156,6 +161,7 @@ def MediaPlayerInit():
 	else:
 		pass
 
+
 def MoviePlayer__init__(self, session, service):
 	baseMoviePlayer__init__(self, session, service)
 	if config.plugins.VCS.media_player.value:
@@ -166,6 +172,7 @@ def MoviePlayer__init__(self, session, service):
 				{
 					"blue": showVCS,
 				}, -1)
+
 
 def MediaPlayer__init__(self, session, args=None):
 	baseMediaPlayer__init__(self, session, args)
@@ -178,6 +185,7 @@ def MediaPlayer__init__(self, session, args=None):
 					"blue": showVCS,
 				}, -1)
 
+
 baseInfoBar__init__ = None
 auto_vcs = None
 vcsinfobar = None
@@ -185,9 +193,11 @@ base_setSeekState = None
 baseServiceInfo_getBoolean = None
 origChannelContextMenu__init__ = None
 
+
 def newInfoBar__init__(self, session):
 	baseInfoBar__init__(self, session)
 	self.vcsinfobar = VcsInfoBar(session, self)
+
 
 @cached
 def getBoolean(self):
@@ -214,6 +224,7 @@ def getBoolean(self):
 		return False
 	else:
 		return baseServiceInfo_getBoolean(self)
+
 
 def autostart(reason, **kwargs):
 	if reason == 0:
@@ -256,6 +267,7 @@ def autostart(reason, **kwargs):
 			ChannelContextMenu.addFlag43SDservice = addFlag43SDservice
 			ChannelContextMenu.removeFlag43SDservice = removeFlag43SDservice
 
+
 def VCSChannelContextMenu__init__(self, session, csel):
 	origChannelContextMenu__init__(self, session, csel)
 	if csel.mode == MODE_TV and csel.bouquet_mark_edit == OFF and not csel.movemode:
@@ -283,6 +295,7 @@ def VCSChannelContextMenu__init__(self, session, csel):
 							if 0 < video_height < 720 and info.getInfo(iServiceInformation.sVideoType) == 1 and aspect == 3:
 								self["menu"].list.insert(8, ChoiceEntryComponent(text=(_("Mark service as 4:3 AVC/MPEG4"), boundFunction(self.addFlag43SDservice, 1)), key="dummy"))
 
+
 def addFlag43SDservice(self, answer=None):
 	if NavigationInstance.instance:
 		playref = NavigationInstance.instance.getCurrentlyPlayingServiceReference()
@@ -295,6 +308,7 @@ def addFlag43SDservice(self, answer=None):
 				pass
 	self.close()
 
+
 def removeFlag43SDservice(self, answer=None):
 	eDVBDB.getInstance().removeFlag(eServiceReference(self.csel.getCurrentSelection().toString()), FLAG_SERVICE_43_AVC)
 	if NavigationInstance.instance:
@@ -306,6 +320,7 @@ def removeFlag43SDservice(self, answer=None):
 			except:
 				pass
 	self.close()
+
 
 def updateAspect(self):
 	vu_start_video = config.plugins.VCS.vu_start_video.value
@@ -331,6 +346,7 @@ def updateAspect(self):
 			print "[VCS] force update video aspect ", policy
 		except IOError:
 			pass
+
 
 def setSeekState(self, state):
 	prev_state = state
@@ -365,11 +381,14 @@ def setSeekState(self, state):
 				self.updateAspectTimer.start(100, True)
 	return True
 
+
 def show_choisebox(session, **kwargs):
 	VcsChoiseList(session)
 
+
 def main(session, **kwargs):
 	session.open(VcsSetupScreen)
+
 
 def Plugins(**kwargs):
 	from Plugins.Plugin import PluginDescriptor

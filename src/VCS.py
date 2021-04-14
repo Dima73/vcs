@@ -51,12 +51,14 @@ examples_sh = "/usr/lib/enigma2/python/Plugins/Extensions/VCS/examples.sh"
 _clipping = fileExists('/proc/stb/vmpeg/0/clip_left') and fileExists('/proc/stb/vmpeg/0/clip_top')
 _stretch = fileExists('/proc/stb/vmpeg/0/clip_stretch')
 
+
 def isMovieAspect_plugin():
 	try:
 		MovieAspect_plugin = config.plugins.movieaspect.enabled
 	except:
 		MovieAspect_plugin = None
 	return MovieAspect_plugin
+
 
 class VcsSetupScreen(Screen, ConfigListScreen):
 
@@ -378,6 +380,7 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 			except:
 				pass
 
+
 class VcsProfileSetup(ConfigListScreen, Screen):
 	skin = """
 		<screen name="VcsProfileSetup" position="center,center" size="550,350" title="%s" backgroundColor="transparent" flags="wfNoBorder" >
@@ -512,10 +515,12 @@ class VcsProfileSetup(ConfigListScreen, Screen):
 			if _clipping and not config.plugins.VCS.dont_use_clip.value:
 				self["header"].setText("%s\n[%d, %d, %d, %d]" % (getAspectString(self.pf_aspect.value), self.clip.X.value, self.clip.Y.value, self.clip.W.value, self.clip.H.value))
 
+
 def getAspect():
 	if not oe_mode and hasattr(newAVSwitch, 'getAspectRatioSetting'):
 		return newAVSwitch().getAspectRatioSetting()
 	return getAspectRatioSetting()
+
 
 def getAspectRatioSetting():
 	valstr = config.av.aspectratio.value
@@ -535,8 +540,10 @@ def getAspectRatioSetting():
 		val = 6
 	return val
 
+
 def getAspectString(aspectnum):
 	return {0: _("4:3 Letterbox"), 1: _("4:3 PanScan"), 2: _("16:9"), 3: _("16:9 always"), 4: _("16:10 Letterbox"), 5: _("16:10 PanScan"), 6: _("16:9 Letterbox")}[aspectnum]
+
 
 def setAspect(aspect):
 	map = {0: "4_3_letterbox", 1: "4_3_panscan", 2: "16_9", 3: "16_9_always", 4: "16_10_letterbox", 5: "16_10_panscan", 6: "16_9_letterbox"}
@@ -546,6 +553,7 @@ def setAspect(aspect):
 	else:
 		eAVSwitch.getInstance().setAspectRatio(aspect)
 
+
 def setAspectRatio(cfgelement):
 	try:
 		f = open("/proc/stb/video/aspect", "w")
@@ -553,6 +561,7 @@ def setAspectRatio(cfgelement):
 		f.close()
 	except:
 		pass
+
 
 def getStretch():
 	result = 0
@@ -564,6 +573,7 @@ def getStretch():
 		pass
 	return result
 
+
 def setStretch(stretchnum):
 	try:
 		file = open('/proc/stb/vmpeg/0/clip_stretch', 'w')
@@ -572,6 +582,7 @@ def setStretch(stretchnum):
 		setApply()
 	except:
 		pass
+
 
 def getClipRect():
 	result = [0, 0, 720, 576]
@@ -584,6 +595,7 @@ def getClipRect():
 			pass
 	return result
 
+
 def setClipRect(rectlist):
 	for (n, f) in enumerate(["left", "top", "width", "height"]):
 		try:
@@ -593,6 +605,7 @@ def setClipRect(rectlist):
 			setApply()
 		except:
 			pass
+
 
 def setApply():
 	if not _clipping or config.plugins.VCS.dont_use_clip.value:
@@ -607,6 +620,7 @@ def setApply():
 	except:
 		pass
 
+
 def InitVcsProfile(profile=None, name=""):
 	if profile is None:
 		profile = ConfigSubsection()
@@ -619,6 +633,7 @@ def InitVcsProfile(profile=None, name=""):
 	profile.aspect = ConfigInteger(2)
 	profile.cliprect = ConfigPosition([0, 0, 720, 576], (719, 575, 720, 576))
 	return profile
+
 
 class VcsMessageBox(Screen):
 	skin = """
@@ -659,6 +674,7 @@ VcsInfoBarKeys = [
 
 from keyids import KEYIDS
 from enigma import eActionMap
+
 
 class VcsInfoBar:
 
@@ -778,6 +794,7 @@ class VcsInfoBar:
 				self.doSwitch(config.plugins.VCS.profiles[answer[1]])
 				self.currentMode = answer[2]
 
+
 class VcsChoiseList:
 	def __init__(self, session):
 		self.session = session
@@ -816,6 +833,7 @@ class VcsChoiseList:
 				self.execute()
 			else:
 				self.Switch(config.plugins.VCS.profiles[answer[1]])
+
 
 class AutoVCS(Screen):
 	def __init__(self, session):
