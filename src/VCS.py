@@ -1,7 +1,7 @@
 #
 # Video ClipModes Switcher Plugin for Enigma2
 # Coded by vlamo (c) 2012
-# 
+#
 # This module is free software; you can redistribute it and/or modify it under
 # the terms of the GNU Lesser General Public License as published by the Free
 # Software Foundation; either version 2 of the License, or (at your option) any
@@ -18,7 +18,7 @@
 ###############################################################################
 
 from . import _, PLUGIN_NAME
-from  plugin import BOX_MODEL, BOX_NAME
+from plugin import BOX_MODEL, BOX_NAME
 from Components.config import config, getConfigListEntry, ConfigSubsection, ConfigSelection, ConfigText, ConfigYesNo, ConfigInteger, ConfigPosition, ConfigSlider
 from Components.Button import Button
 from Components.Label import Label
@@ -51,12 +51,14 @@ examples_sh = "/usr/lib/enigma2/python/Plugins/Extensions/VCS/examples.sh"
 _clipping = fileExists('/proc/stb/vmpeg/0/clip_left') and fileExists('/proc/stb/vmpeg/0/clip_top')
 _stretch = fileExists('/proc/stb/vmpeg/0/clip_stretch')
 
+
 def isMovieAspect_plugin():
 	try:
 		MovieAspect_plugin = config.plugins.movieaspect.enabled
 	except:
 		MovieAspect_plugin = None
 	return MovieAspect_plugin
+
 
 class VcsSetupScreen(Screen, ConfigListScreen):
 
@@ -75,12 +77,12 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 		<widget source="profiles" render="Listbox" position="10,220" size="600,230" zPosition="1" >
 			<convert type="TemplatedMultiContent">
 				{"templates":
-					{"default": (45, [ 
+					{"default": (45, [
 						MultiContentEntryText(pos=(50, 0),  size=(200, 45), font=0, flags=RT_HALIGN_LEFT|RT_VALIGN_CENTER|RT_WRAP, text=1),
 						MultiContentEntryText(pos=(260, 0), size=(320, 45), font=1, flags=RT_HALIGN_LEFT|RT_VALIGN_CENTER|RT_WRAP, text=2),
 						MultiContentEntryPixmapAlphaTest(pos=(12, 9), size=(25, 24), png=3),
 					], True, "showOnDemand"),
-					"notselected": (45, [ 
+					"notselected": (45, [
 						MultiContentEntryText(pos=(50, 0),  size=(200, 45), font=0, flags=RT_HALIGN_LEFT|RT_VALIGN_CENTER|RT_WRAP, text=1),
 						MultiContentEntryText(pos=(260, 0), size=(320, 45), font=1, flags=RT_HALIGN_LEFT|RT_VALIGN_CENTER|RT_WRAP, text=2),
 						MultiContentEntryPixmapAlphaTest(pos=(12, 9), size=(25, 24), png=3),
@@ -92,13 +94,13 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 				}
 			</convert>
 		</widget>
-	</screen>""" % (_('%s: video clipping switcher')%(PLUGIN_NAME))
+	</screen>""" % (_('%s: video clipping switcher') % (PLUGIN_NAME))
 	FOCUS_CONFIG, FOCUS_LIST = range(2)
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
 
-		for btn in ("red","green","yellow","blue"):
+		for btn in ("red", "green", "yellow", "blue"):
 			self["key_" + btn] = Button(" ")
 
 		ConfigListScreen.__init__(self, [])
@@ -123,12 +125,12 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 				"down": self.keyDown,
 				"ok": self.keyOK,
 			}, -2)
-		
+
 		self.onClose.append(self.__closed)
 		self.onLayoutFinish.append(self.__layoutFinished)
 		self.onShown.append(self.updateButtonState)
 		self.prev_ext_menu = config.plugins.VCS.ext_menu.value
-		
+
 	def __layoutFinished(self):
 		self["config"].instance.setSelectionEnable(True)
 		self["profiles"].style = "notselected"
@@ -155,9 +157,9 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 			if cur:
 				self["key_red"].setText(_("Delete"))
 				self["key_yellow"].setText(self["profiles"].index > 0 and _("Move Up") or " ")
-				self["key_blue"].setText(self["profiles"].index < len(self.pfsList)-1 and _("Move Down") or " ")
+				self["key_blue"].setText(self["profiles"].index < len(self.pfsList) - 1 and _("Move Down") or " ")
 			else:
-				for btn in ("key_red","key_yellow","key_blue"):
+				for btn in ("key_red", "key_yellow", "key_blue"):
 					self[btn].setText(" ")
 		else:
 			self["key_red"].setText(_("Exit"))
@@ -165,9 +167,9 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 			self["key_blue"].setText(" ")
 
 	def updateConfigList(self):
-		pfslist = [ (-1,_("None")) ]
-		pf43list = [ (-1,_("Disabled")) ]
-		pf169list = [ (-1,_("Disabled")) ]
+		pfslist = [(-1, _("None"))]
+		pf43list = [(-1, _("Disabled"))]
+		pf169list = [(-1, _("Disabled"))]
 		pfs = config.plugins.VCS.profiles
 		for x in range(len(pfs)):
 			pfslist.append((x, pfs[x].name.value))
@@ -225,7 +227,7 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 		pfs = config.plugins.VCS.profiles
 		for x in range(len(pfs)):
 			s = "%s %s" % (getAspectString(pfs[x].aspect.value), _clipping and not config.plugins.VCS.dont_use_clip.value and pfs[x].cliprect.value or "")
-			path = "skin_default/icons/lock_%s.png"%(pfs[x].enabled.value and "on" or "off")
+			path = "skin_default/icons/lock_%s.png" % (pfs[x].enabled.value and "on" or "off")
 			png = LoadPixmap(resolveFilename(SCOPE_SKIN, path))
 			list.append((pfs[x], pfs[x].name.value, s, png))
 		self.pfsList = list
@@ -297,7 +299,7 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 			self.updateProfileList()
 			if len(pfs):
 				if idx >= len(pfs):
-					self["profiles"].index = len(pfs)-1
+					self["profiles"].index = len(pfs) - 1
 				else:
 					self["profiles"].index = idx
 			self.updateConfigList()
@@ -331,7 +333,7 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 			if HZhotkey and not WarningMessage:
 				global WarningMessage
 				WarningMessage = True
-				self.session.open(MessageBox, _("Warning!\n'HistoryZapSelector' plugin hotkey need disabled!\n"), MessageBox.TYPE_INFO, timeout = 5)
+				self.session.open(MessageBox, _("Warning!\n'HistoryZapSelector' plugin hotkey need disabled!\n"), MessageBox.TYPE_INFO, timeout=5)
 		if self.prev_ext_menu != config.plugins.VCS.ext_menu.value:
 			plugins.readPluginList(resolveFilename(SCOPE_PLUGINS))
 		self.close()
@@ -350,7 +352,7 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 			if self["profiles"].getIndex() == 0:
 				self["config"].instance.setSelectionEnable(True)
 				self["profiles"].style = "notselected"
-				self["config"].setCurrentIndex(len(self["config"].getList())-1)
+				self["config"].setCurrentIndex(len(self["config"].getList()) - 1)
 				self.focus = self.FOCUS_CONFIG
 			else:
 				self["profiles"].selectPrevious()
@@ -358,7 +360,7 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 
 	def keyDown(self):
 		if self.focus == self.FOCUS_CONFIG:
-			if self["config"].getCurrentIndex() < len(self["config"].getList())-1:
+			if self["config"].getCurrentIndex() < len(self["config"].getList()) - 1:
 				self["config"].instance.moveSelection(self["config"].instance.moveDown)
 			else:
 				self["config"].instance.setSelectionEnable(False)
@@ -367,16 +369,17 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 		elif self.focus == self.FOCUS_LIST:
 			self["profiles"].selectNext()
 		self.updateButtonState()
-		
+
 	def showExamples(self):
 		if not _clipping or config.plugins.VCS.dont_use_clip.value:
 			return
 		if os.path.exists(examples_sh):
 			try:
 				os.chmod(examples_sh, 0755)
-				self.session.open(Console,_("Examples:"),["%s" % examples_sh])
+				self.session.open(Console, _("Examples:"), ["%s" % examples_sh])
 			except:
 				pass
+
 
 class VcsProfileSetup(ConfigListScreen, Screen):
 	skin = """
@@ -388,7 +391,7 @@ class VcsProfileSetup(ConfigListScreen, Screen):
 			<ePixmap pixmap="skin_default/buttons/green.png" position="275,310" size="140,40" alphatest="on" />
 			<widget source="key_red" render="Label" position="135,310" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
 			<widget source="key_green" render="Label" position="275,310" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
-		</screen>""" % (_('%s: Profile Setup')%(PLUGIN_NAME))
+		</screen>""" % (_('%s: Profile Setup') % (PLUGIN_NAME))
 
 	def __init__(self, session, profile):
 		Screen.__init__(self, session)
@@ -431,11 +434,11 @@ class VcsProfileSetup(ConfigListScreen, Screen):
 
 	def keyOk(self):
 		cur = self["config"].getCurrent()
-		if cur[1] in (self.clip.X,self.clip.Y,self.clip.W,self.clip.H):
+		if cur[1] in (self.clip.X, self.clip.Y, self.clip.W, self.clip.H):
 			from Components.Input import Input
 			from Screens.InputBox import InputBox
 			from Tools.BoundFunction import boundFunction
-			self.session.openWithCallback(boundFunction(self.setSliderStep, cur[1]), InputBox, title=_("Set slider step (1 - 20):"), text=str(cur[1].increment), type = Input.NUMBER)
+			self.session.openWithCallback(boundFunction(self.setSliderStep, cur[1]), InputBox, title=_("Set slider step (1 - 20):"), text=str(cur[1].increment), type=Input.NUMBER)
 
 	def setSliderStep(self, slider, step):
 		if step and (0 < int(step) < 21):
@@ -445,24 +448,24 @@ class VcsProfileSetup(ConfigListScreen, Screen):
 	def initConfig(self, pf):
 		self.profile = pf
 		self.clip = ConfigSubsection()
-		self.clip.X = ConfigSlider(default = pf.cliprect.value[0], increment = 5, limits = (0, 719))
-		self.clip.Y = ConfigSlider(default = pf.cliprect.value[1], increment = 5, limits = (0, 575))
-		self.clip.W = ConfigSlider(default = pf.cliprect.value[2], increment = 5, limits = (0, 720))
-		self.clip.H = ConfigSlider(default = pf.cliprect.value[3], increment = 5, limits = (0, 576))
-		self.pf_stretch = ConfigSelection([("0",_("no")), ("1", _("yes"))], default = pf.stretch.value)
-		self.pf_aspect = ConfigSelection([(0, _("4:3 Letterbox")), (1, _("4:3 PanScan")), (2, _("16:9")), (3, _("16:9 always")), (4, _("16:10 Letterbox")), (5, _("16:10 PanScan")), (6, _("16:9 Letterbox"))], default = pf.aspect.value)
+		self.clip.X = ConfigSlider(default=pf.cliprect.value[0], increment=5, limits=(0, 719))
+		self.clip.Y = ConfigSlider(default=pf.cliprect.value[1], increment=5, limits=(0, 575))
+		self.clip.W = ConfigSlider(default=pf.cliprect.value[2], increment=5, limits=(0, 720))
+		self.clip.H = ConfigSlider(default=pf.cliprect.value[3], increment=5, limits=(0, 576))
+		self.pf_stretch = ConfigSelection([("0", _("no")), ("1", _("yes"))], default=pf.stretch.value)
+		self.pf_aspect = ConfigSelection([(0, _("4:3 Letterbox")), (1, _("4:3 PanScan")), (2, _("16:9")), (3, _("16:9 always")), (4, _("16:10 Letterbox")), (5, _("16:10 PanScan")), (6, _("16:9 Letterbox"))], default=pf.aspect.value)
 		self.pf_aspect.addNotifier(self.aspectSettingChanged)
 		if _stretch:
 			self.pf_stretch.addNotifier(self.stretchSettingChanged)
 		if _clipping and not config.plugins.VCS.dont_use_clip.value:
-			for elem in [self.clip.X,self.clip.Y,self.clip.W,self.clip.H]:
+			for elem in [self.clip.X, self.clip.Y, self.clip.W, self.clip.H]:
 				elem.addNotifier(self.videoSettingChanged)
 
 	def newConfig(self):
 		pass
 
 	def createSetup(self):
-		list = [ ]
+		list = []
 		list.append(getConfigListEntry(_("Profile Name"), self.profile.name))
 		list.append(getConfigListEntry(_("Enable Profile"), self.profile.enabled))
 		if _stretch:
@@ -477,7 +480,7 @@ class VcsProfileSetup(ConfigListScreen, Screen):
 		self["config"].l.setList(list)
 
 	def save(self):
-		self.profile.cliprect.value = [self.clip.X.value,self.clip.Y.value,self.clip.W.value,self.clip.H.value]
+		self.profile.cliprect.value = [self.clip.X.value, self.clip.Y.value, self.clip.W.value, self.clip.H.value]
 		self.profile.stretch.value = self.pf_stretch.value
 		self.profile.aspect.value = self.pf_aspect.value
 		self.profile.save()
@@ -504,18 +507,20 @@ class VcsProfileSetup(ConfigListScreen, Screen):
 			self.clip.H.value = 576 - self.clip.Y.value
 		if "config" in self:
 			self["config"].instance.invalidate()
-		setClipRect([self.clip.X.value,self.clip.Y.value,self.clip.W.value,self.clip.H.value])
+		setClipRect([self.clip.X.value, self.clip.Y.value, self.clip.W.value, self.clip.H.value])
 		self.updateHeaderText()
 
 	def updateHeaderText(self):
 		if "header" in self:
 			if _clipping and not config.plugins.VCS.dont_use_clip.value:
-				self["header"].setText("%s\n[%d, %d, %d, %d]"%(getAspectString(self.pf_aspect.value),self.clip.X.value,self.clip.Y.value,self.clip.W.value,self.clip.H.value))
+				self["header"].setText("%s\n[%d, %d, %d, %d]" % (getAspectString(self.pf_aspect.value), self.clip.X.value, self.clip.Y.value, self.clip.W.value, self.clip.H.value))
+
 
 def getAspect():
 	if not oe_mode and hasattr(newAVSwitch, 'getAspectRatioSetting'):
 		return newAVSwitch().getAspectRatioSetting()
 	return getAspectRatioSetting()
+
 
 def getAspectRatioSetting():
 	valstr = config.av.aspectratio.value
@@ -535,16 +540,19 @@ def getAspectRatioSetting():
 		val = 6
 	return val
 
+
 def getAspectString(aspectnum):
 	return {0: _("4:3 Letterbox"), 1: _("4:3 PanScan"), 2: _("16:9"), 3: _("16:9 always"), 4: _("16:10 Letterbox"), 5: _("16:10 PanScan"), 6: _("16:9 Letterbox")}[aspectnum]
 
+
 def setAspect(aspect):
-	map = {0: "4_3_letterbox", 1: "4_3_panscan", 2: "16_9", 3: "16_9_always", 4: "16_10_letterbox", 5: "16_10_panscan",  6: "16_9_letterbox"}
+	map = {0: "4_3_letterbox", 1: "4_3_panscan", 2: "16_9", 3: "16_9_always", 4: "16_10_letterbox", 5: "16_10_panscan", 6: "16_9_letterbox"}
 	config.av.aspectratio.setValue(map[aspect])
 	if not oe_mode and hasattr(newAVSwitch, 'setAspectRatio'):
 		newAVSwitch().setAspectRatio(aspect)
 	else:
 		eAVSwitch.getInstance().setAspectRatio(aspect)
+
 
 def setAspectRatio(cfgelement):
 	try:
@@ -553,6 +561,7 @@ def setAspectRatio(cfgelement):
 		f.close()
 	except:
 		pass
+
 
 def getStretch():
 	result = 0
@@ -564,6 +573,7 @@ def getStretch():
 		pass
 	return result
 
+
 def setStretch(stretchnum):
 	try:
 		file = open('/proc/stb/vmpeg/0/clip_stretch', 'w')
@@ -573,26 +583,29 @@ def setStretch(stretchnum):
 	except:
 		pass
 
+
 def getClipRect():
-	result = [0,0,720,576]
-	for (n,f) in enumerate(["left","top","width","height"]):
+	result = [0, 0, 720, 576]
+	for (n, f) in enumerate(["left", "top", "width", "height"]):
 		try:
-			fd = open("/proc/stb/vmpeg/0/clip_%s"%(f), "r")
-			result[n] = int("0X%s"%(fd.readline().strip()), 16)
+			fd = open("/proc/stb/vmpeg/0/clip_%s" % (f), "r")
+			result[n] = int("0X%s" % (fd.readline().strip()), 16)
 			fd.close()
 		except:
 			pass
 	return result
 
+
 def setClipRect(rectlist):
-	for (n,f) in enumerate(["left","top","width","height"]):
+	for (n, f) in enumerate(["left", "top", "width", "height"]):
 		try:
-			fd = open("/proc/stb/vmpeg/0/clip_%s"%(f), "w")
+			fd = open("/proc/stb/vmpeg/0/clip_%s" % (f), "w")
 			fd.write('%X' % rectlist[n])
 			fd.close()
 			setApply()
 		except:
 			pass
+
 
 def setApply():
 	if not _clipping or config.plugins.VCS.dont_use_clip.value:
@@ -607,6 +620,7 @@ def setApply():
 	except:
 		pass
 
+
 def InitVcsProfile(profile=None, name=""):
 	if profile is None:
 		profile = ConfigSubsection()
@@ -615,10 +629,11 @@ def InitVcsProfile(profile=None, name=""):
 		profile.name.value = name
 		profile.name.save()
 	profile.enabled = ConfigYesNo(default=True)
-	profile.stretch = ConfigSelection([("0",_("no")), ("1", _("yes"))], default="0")
+	profile.stretch = ConfigSelection([("0", _("no")), ("1", _("yes"))], default="0")
 	profile.aspect = ConfigInteger(2)
-	profile.cliprect = ConfigPosition([0,0,720,576], (719,575,720,576))
+	profile.cliprect = ConfigPosition([0, 0, 720, 576], (719, 575, 720, 576))
 	return profile
+
 
 class VcsMessageBox(Screen):
 	skin = """
@@ -645,20 +660,21 @@ class VcsMessageBox(Screen):
 
 
 VcsInfoBarKeys = [
-	["none",_("NONE"),["KEY_RESERVED"]],
-	["Green",_("GREEN"),["KEY_GREEN"]],
-	["Yellow",_("YELLOW"),["KEY_YELLOW"]],
-	["Radio",_("RADIO"),["KEY_RADIO"]],
-	["Text",_("TEXT"),["KEY_TEXT"]],
-	["Tv",_("TV"),["KEY_TV"]],
-	["Help",_("HELP"),["KEY_HELP"]],
-	["TextHelp",_("TEXT / HELP"),["KEY_HELP","KEY_TEXT"]],
-	["History",_("< / >"),["KEY_NEXT","KEY_PREVIOUS"]],
-	["Bouquet",_("BOUQUET- / BOUQUET+"),["KEY_CHANNELUP","KEY_CHANNELDOWN"]],
+	["none", _("NONE"), ["KEY_RESERVED"]],
+	["Green", _("GREEN"), ["KEY_GREEN"]],
+	["Yellow", _("YELLOW"), ["KEY_YELLOW"]],
+	["Radio", _("RADIO"), ["KEY_RADIO"]],
+	["Text", _("TEXT"), ["KEY_TEXT"]],
+	["Tv", _("TV"), ["KEY_TV"]],
+	["Help", _("HELP"), ["KEY_HELP"]],
+	["TextHelp", _("TEXT / HELP"), ["KEY_HELP", "KEY_TEXT"]],
+	["History", _("< / >"), ["KEY_NEXT", "KEY_PREVIOUS"]],
+	["Bouquet", _("BOUQUET- / BOUQUET+"), ["KEY_CHANNELUP", "KEY_CHANNELDOWN"]],
 ]
 
 from keyids import KEYIDS
 from enigma import eActionMap
+
 
 class VcsInfoBar:
 
@@ -689,7 +705,7 @@ class VcsInfoBar:
 			else:
 				self.switchMode(0)
 		self.lastKey = None
-		self.hotkeys = { }
+		self.hotkeys = {}
 		for x in VcsInfoBarKeys:
 			self.hotkeys[x[0]] = [KEYIDS[key] for key in x[2]]
 		if infobar:
@@ -731,9 +747,9 @@ class VcsInfoBar:
 		if config.plugins.VCS.default.value != -1 and not config.plugins.VCS.default.value in range(config.plugins.VCS.pfs_count.value):
 			if self.defaultMode is None:
 				self.defaultMode = InitVcsProfile(name=_("Default Mode"))
-			modeslist = [ self.defaultMode ]
+			modeslist = [self.defaultMode]
 		else:
-			modeslist = [ ]
+			modeslist = []
 		for x in range(config.plugins.VCS.pfs_count.value):
 			if config.plugins.VCS.profiles[x].enabled.value:
 				modeslist.append(config.plugins.VCS.profiles[x])
@@ -755,20 +771,20 @@ class VcsInfoBar:
 		self.session.open(VcsSetupScreen)
 
 	def showChoiceBox(self):
-		modeslist = [ ]
-		keyslist = [ ]
+		modeslist = []
+		keyslist = []
 		y = 0
 		for x in range(config.plugins.VCS.pfs_count.value):
 			if config.plugins.VCS.profiles[x].enabled.value and config.plugins.VCS.enabled.value:
 				pf = config.plugins.VCS.profiles[x]
-				modeslist.append(('%s (%s %s)'%(pf.name.value, getAspectString(pf.aspect.value), _clipping and not config.plugins.VCS.dont_use_clip.value and pf.cliprect.value or ""), x, y))
-				keyslist.append(x < 9 and str(x+1) or x == 9 and '0' or '')
+				modeslist.append(('%s (%s %s)' % (pf.name.value, getAspectString(pf.aspect.value), _clipping and not config.plugins.VCS.dont_use_clip.value and pf.cliprect.value or ""), x, y))
+				keyslist.append(x < 9 and str(x + 1) or x == 9 and '0' or '')
 				y += 1
-		modeslist.append((_('Call %s plugin')%(PLUGIN_NAME),-1))
+		modeslist.append((_('Call %s plugin') % (PLUGIN_NAME), -1))
 		keyslist.append('blue')
 		from Screens.ChoiceBox import ChoiceBox
-		dlg = self.session.openWithCallback(self.choiceCallback, ChoiceBox, list = modeslist, keys = keyslist, selection = self.currentMode)
-		dlg.setTitle(_('%s: Profile Selection')%(PLUGIN_NAME))
+		dlg = self.session.openWithCallback(self.choiceCallback, ChoiceBox, list=modeslist, keys=keyslist, selection=self.currentMode)
+		dlg.setTitle(_('%s: Profile Selection') % (PLUGIN_NAME))
 
 	def choiceCallback(self, answer):
 		if answer is not None:
@@ -778,24 +794,25 @@ class VcsInfoBar:
 				self.doSwitch(config.plugins.VCS.profiles[answer[1]])
 				self.currentMode = answer[2]
 
+
 class VcsChoiseList:
 	def __init__(self, session):
 		self.session = session
 		self.msgbox = None
-		modeslist = [ ]
-		keyslist = [ ]
+		modeslist = []
+		keyslist = []
 		y = 0
 		for x in range(config.plugins.VCS.pfs_count.value):
 			if config.plugins.VCS.profiles[x].enabled.value and config.plugins.VCS.enabled.value:
 				pf = config.plugins.VCS.profiles[x]
-				modeslist.append(('%s (%s %s)'%(pf.name.value, getAspectString(pf.aspect.value), _clipping and not config.plugins.VCS.dont_use_clip.value and pf.cliprect.value or ""), x, y))
-				keyslist.append(x < 9 and str(x+1) or x == 9 and '0' or '')
+				modeslist.append(('%s (%s %s)' % (pf.name.value, getAspectString(pf.aspect.value), _clipping and not config.plugins.VCS.dont_use_clip.value and pf.cliprect.value or ""), x, y))
+				keyslist.append(x < 9 and str(x + 1) or x == 9 and '0' or '')
 				y += 1
-		modeslist.append((_('Call %s plugin')%(PLUGIN_NAME),-1))
+		modeslist.append((_('Call %s plugin') % (PLUGIN_NAME), -1))
 		keyslist.append('blue')
 		from Screens.ChoiceBox import ChoiceBox
-		dlg = self.session.openWithCallback(self.choiceCallback, ChoiceBox, list = modeslist, keys = keyslist)
-		dlg.setTitle(_('%s: Profile Selection')%(PLUGIN_NAME))
+		dlg = self.session.openWithCallback(self.choiceCallback, ChoiceBox, list=modeslist, keys=keyslist)
+		dlg.setTitle(_('%s: Profile Selection') % (PLUGIN_NAME))
 
 	def Switch(self, profile):
 		setStretch(int(profile.stretch.value))
@@ -817,6 +834,7 @@ class VcsChoiseList:
 			else:
 				self.Switch(config.plugins.VCS.profiles[answer[1]])
 
+
 class AutoVCS(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -824,8 +842,7 @@ class AutoVCS(Screen):
 		self.msgbox = None
 		self.after_switch_delay = False
 		self.policy2 = ""
-		self.__event_tracker = ServiceEventTracker(screen = self, eventmap =
-			{
+		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
 				iPlayableService.evVideoSizeChanged: self.__vcsVideoSizeChanged,
 				iPlayableService.evVideoProgressiveChanged: self.__vcsVideoProgressiveChanged,
 				iPlayableService.evVideoFramerateChanged: self.__vcsVideoFramerateChanged,
@@ -854,7 +871,7 @@ class AutoVCS(Screen):
 			self.timer.stop()
 			self.after_switch_delay = False
 			if int(config.plugins.VCS.delay_switch_profile.value) > 0:
-				self.timer.start(int(config.plugins.VCS.delay_switch_profile.value)*1000, True)
+				self.timer.start(int(config.plugins.VCS.delay_switch_profile.value) * 1000, True)
 			else:
 				self.ModeChanged()
 			self.newService = False
@@ -887,7 +904,7 @@ class AutoVCS(Screen):
 			ref = self.session.nav.getCurrentlyPlayingServiceReference()
 			if ref:
 				str_service = ref.toString()
-				stream_service = '%3a//' in str_service 
+				stream_service = '%3a//' in str_service
 				movie_service = str_service.rsplit(":", 1)[1].startswith("/")
 				if stream_service or movie_service:
 					action = config.plugins.movieaspect.enabled.value
@@ -902,11 +919,11 @@ class AutoVCS(Screen):
 				info = service and service.info()
 				if info:
 					aspect = info.getInfo(iServiceInformation.sAspect)
-					if aspect in ( 1, 2, 5, 6, 9, 0xA, 0xD, 0xE ): # aspect = "4:3"
+					if aspect in (1, 2, 5, 6, 9, 0xA, 0xD, 0xE): # aspect = "4:3"
 						if auto_service_43 != -1:
 							if config.plugins.VCS.profiles[auto_service_43].enabled.value:
 								self.AutoSwitch(config.plugins.VCS.profiles[auto_service_43])
-					elif aspect in ( 3, 4, 7, 8, 0xB, 0xC, 0xF, 0x10 ): # aspect = "16:9"
+					elif aspect in (3, 4, 7, 8, 0xB, 0xC, 0xF, 0x10): # aspect = "16:9"
 						apply = False
 						if auto_service_169 != -1:
 							if config.plugins.VCS.profiles[auto_service_169].enabled.value:
@@ -947,7 +964,7 @@ class AutoVCS(Screen):
 		except:
 			pass
 		if int(config.plugins.VCS.msgtime.value):
-			msg = '%s\n%s\n%s' % (profile.name.value, getAspectString(profile.aspect.value), _clipping  and not config.plugins.VCS.dont_use_clip.value and profile.cliprect.value or "")
+			msg = '%s\n%s\n%s' % (profile.name.value, getAspectString(profile.aspect.value), _clipping and not config.plugins.VCS.dont_use_clip.value and profile.cliprect.value or "")
 			if self.msgbox is None:
 				self.msgbox = self.session.instantiateDialog(VcsMessageBox)
 			self.msgbox.showMessage(msg, int(config.plugins.VCS.msgtime.value))
