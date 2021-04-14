@@ -73,7 +73,7 @@ config.plugins.VCS.enabled = ConfigEnableDisable(True)
 config.plugins.VCS.restart_after_standby = ConfigYesNo(False)
 config.plugins.VCS.hotkey = ConfigSelection([(x[0],x[1]) for x in VcsInfoBarKeys], "none")
 config.plugins.VCS.hkaction = ConfigSelection([("switch",_("switch profiles")),("choise",_("show choise box"))], "switch")
-config.plugins.VCS.dont_use_clip = ConfigYesNo(default = BOX_NAME.startswith('et8500') and True or False)
+config.plugins.VCS.dont_use_clip = ConfigYesNo(default=BOX_NAME.startswith('et8500') and True or False)
 if not BOX_NAME.startswith('et') and config.plugins.VCS.dont_use_clip.value:
 	config.plugins.VCS.dont_use_clip.value = False
 	config.plugins.VCS.dont_use_clip.save()
@@ -117,7 +117,7 @@ def DVDPlayerInit():
 		baseDVDPlayer__init__ = DVDPlayer.__init__
 	DVDPlayer.__init__ = DVDPlayer__init__
 
-def DVDPlayer__init__(self, session, dvd_device = None, dvd_filelist = [ ], args = None):
+def DVDPlayer__init__(self, session, dvd_device=None, dvd_filelist=[ ], args=None):
 	baseDVDPlayer__init__(self, session, dvd_device, dvd_filelist, args)
 	if config.plugins.VCS.dvd_menu.value:
 		def showVCS():
@@ -167,7 +167,7 @@ def MoviePlayer__init__(self, session, service):
 					"blue": showVCS,
 				}, -1)
 
-def MediaPlayer__init__(self, session, args = None):
+def MediaPlayer__init__(self, session, args=None):
 	baseMediaPlayer__init__(self, session, args)
 	if config.plugins.VCS.media_player.value:
 		def showVCS():
@@ -272,7 +272,7 @@ def VCSChannelContextMenu__init__(self, session, csel):
 			str_service = current.toString()
 			if '%3a//' not in str_service and not str_service.rsplit(":", 1)[1].startswith("/"):
 				if eDVBDB.getInstance().getFlag(eServiceReference(str_service)) & FLAG_SERVICE_43_AVC:
-					self["menu"].list.insert(8, ChoiceEntryComponent(text = (_("Unmark service as 4:3 AVC/MPEG4"), boundFunction(self.removeFlag43SDservice,1)), key = "dummy"))
+					self["menu"].list.insert(8, ChoiceEntryComponent(text=(_("Unmark service as 4:3 AVC/MPEG4"), boundFunction(self.removeFlag43SDservice,1)), key="dummy"))
 				elif config.plugins.VCS.vu_avc43.value and self.current_ref and self.current_ref == current:
 					service = session.nav.getCurrentService()
 					if service:
@@ -281,7 +281,7 @@ def VCSChannelContextMenu__init__(self, session, csel):
 							aspect = info.getInfo(iServiceInformation.sAspect)
 							video_height = info.getInfo(iServiceInformation.sVideoHeight)
 							if 0 < video_height < 720 and info.getInfo(iServiceInformation.sVideoType) == 1 and aspect == 3:
-								self["menu"].list.insert(8, ChoiceEntryComponent(text = (_("Mark service as 4:3 AVC/MPEG4"), boundFunction(self.addFlag43SDservice,1)), key = "dummy"))
+								self["menu"].list.insert(8, ChoiceEntryComponent(text=(_("Mark service as 4:3 AVC/MPEG4"), boundFunction(self.addFlag43SDservice,1)), key="dummy"))
 
 def addFlag43SDservice(self, answer=None):
 	if NavigationInstance.instance:
@@ -375,9 +375,9 @@ def Plugins(**kwargs):
 	from Plugins.Plugin import PluginDescriptor
 	desc = _("video clipping switcher") + ": " + PLUGIN_VERSION
 	if config.plugins.VCS.ext_menu.value:
-		return [PluginDescriptor(where = [PluginDescriptor.WHERE_SESSIONSTART,PluginDescriptor.WHERE_AUTOSTART], fnc = autostart),
+		return [PluginDescriptor(where=[PluginDescriptor.WHERE_SESSIONSTART,PluginDescriptor.WHERE_AUTOSTART], fnc=autostart),
 			PluginDescriptor(name=PLUGIN_NAME, description=desc, where=PluginDescriptor.WHERE_PLUGINMENU, icon="vcs.png", fnc=main),
-			PluginDescriptor(name =_('%s:Choise List')%(PLUGIN_NAME), description=desc, where =PluginDescriptor.WHERE_EXTENSIONSMENU, fnc = show_choisebox)]
+			PluginDescriptor(name=_('%s:Choise List')%(PLUGIN_NAME), description=desc, where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=show_choisebox)]
 	else:
-		return [PluginDescriptor(where = [PluginDescriptor.WHERE_SESSIONSTART,PluginDescriptor.WHERE_AUTOSTART], fnc = autostart),
+		return [PluginDescriptor(where=[PluginDescriptor.WHERE_SESSIONSTART,PluginDescriptor.WHERE_AUTOSTART], fnc=autostart),
 			PluginDescriptor(name=PLUGIN_NAME, description=desc, where=PluginDescriptor.WHERE_PLUGINMENU, icon="vcs.png", fnc=main)]

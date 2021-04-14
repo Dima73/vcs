@@ -331,7 +331,7 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 			if HZhotkey and not WarningMessage:
 				global WarningMessage
 				WarningMessage = True
-				self.session.open(MessageBox, _("Warning!\n'HistoryZapSelector' plugin hotkey need disabled!\n"), MessageBox.TYPE_INFO, timeout = 5)
+				self.session.open(MessageBox, _("Warning!\n'HistoryZapSelector' plugin hotkey need disabled!\n"), MessageBox.TYPE_INFO, timeout=5)
 		if self.prev_ext_menu != config.plugins.VCS.ext_menu.value:
 			plugins.readPluginList(resolveFilename(SCOPE_PLUGINS))
 		self.close()
@@ -435,7 +435,7 @@ class VcsProfileSetup(ConfigListScreen, Screen):
 			from Components.Input import Input
 			from Screens.InputBox import InputBox
 			from Tools.BoundFunction import boundFunction
-			self.session.openWithCallback(boundFunction(self.setSliderStep, cur[1]), InputBox, title=_("Set slider step (1 - 20):"), text=str(cur[1].increment), type = Input.NUMBER)
+			self.session.openWithCallback(boundFunction(self.setSliderStep, cur[1]), InputBox, title=_("Set slider step (1 - 20):"), text=str(cur[1].increment), type=Input.NUMBER)
 
 	def setSliderStep(self, slider, step):
 		if step and (0 < int(step) < 21):
@@ -445,12 +445,12 @@ class VcsProfileSetup(ConfigListScreen, Screen):
 	def initConfig(self, pf):
 		self.profile = pf
 		self.clip = ConfigSubsection()
-		self.clip.X = ConfigSlider(default = pf.cliprect.value[0], increment = 5, limits = (0, 719))
-		self.clip.Y = ConfigSlider(default = pf.cliprect.value[1], increment = 5, limits = (0, 575))
-		self.clip.W = ConfigSlider(default = pf.cliprect.value[2], increment = 5, limits = (0, 720))
-		self.clip.H = ConfigSlider(default = pf.cliprect.value[3], increment = 5, limits = (0, 576))
-		self.pf_stretch = ConfigSelection([("0",_("no")), ("1", _("yes"))], default = pf.stretch.value)
-		self.pf_aspect = ConfigSelection([(0, _("4:3 Letterbox")), (1, _("4:3 PanScan")), (2, _("16:9")), (3, _("16:9 always")), (4, _("16:10 Letterbox")), (5, _("16:10 PanScan")), (6, _("16:9 Letterbox"))], default = pf.aspect.value)
+		self.clip.X = ConfigSlider(default=pf.cliprect.value[0], increment=5, limits=(0, 719))
+		self.clip.Y = ConfigSlider(default=pf.cliprect.value[1], increment=5, limits=(0, 575))
+		self.clip.W = ConfigSlider(default=pf.cliprect.value[2], increment=5, limits=(0, 720))
+		self.clip.H = ConfigSlider(default=pf.cliprect.value[3], increment=5, limits=(0, 576))
+		self.pf_stretch = ConfigSelection([("0",_("no")), ("1", _("yes"))], default=pf.stretch.value)
+		self.pf_aspect = ConfigSelection([(0, _("4:3 Letterbox")), (1, _("4:3 PanScan")), (2, _("16:9")), (3, _("16:9 always")), (4, _("16:10 Letterbox")), (5, _("16:10 PanScan")), (6, _("16:9 Letterbox"))], default=pf.aspect.value)
 		self.pf_aspect.addNotifier(self.aspectSettingChanged)
 		if _stretch:
 			self.pf_stretch.addNotifier(self.stretchSettingChanged)
@@ -767,7 +767,7 @@ class VcsInfoBar:
 		modeslist.append((_('Call %s plugin')%(PLUGIN_NAME),-1))
 		keyslist.append('blue')
 		from Screens.ChoiceBox import ChoiceBox
-		dlg = self.session.openWithCallback(self.choiceCallback, ChoiceBox, list = modeslist, keys = keyslist, selection = self.currentMode)
+		dlg = self.session.openWithCallback(self.choiceCallback, ChoiceBox, list=modeslist, keys=keyslist, selection=self.currentMode)
 		dlg.setTitle(_('%s: Profile Selection')%(PLUGIN_NAME))
 
 	def choiceCallback(self, answer):
@@ -794,7 +794,7 @@ class VcsChoiseList:
 		modeslist.append((_('Call %s plugin')%(PLUGIN_NAME),-1))
 		keyslist.append('blue')
 		from Screens.ChoiceBox import ChoiceBox
-		dlg = self.session.openWithCallback(self.choiceCallback, ChoiceBox, list = modeslist, keys = keyslist)
+		dlg = self.session.openWithCallback(self.choiceCallback, ChoiceBox, list=modeslist, keys=keyslist)
 		dlg.setTitle(_('%s: Profile Selection')%(PLUGIN_NAME))
 
 	def Switch(self, profile):
@@ -824,8 +824,7 @@ class AutoVCS(Screen):
 		self.msgbox = None
 		self.after_switch_delay = False
 		self.policy2 = ""
-		self.__event_tracker = ServiceEventTracker(screen = self, eventmap =
-			{
+		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
 				iPlayableService.evVideoSizeChanged: self.__vcsVideoSizeChanged,
 				iPlayableService.evVideoProgressiveChanged: self.__vcsVideoProgressiveChanged,
 				iPlayableService.evVideoFramerateChanged: self.__vcsVideoFramerateChanged,
