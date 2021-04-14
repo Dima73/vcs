@@ -165,9 +165,9 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 			self["key_blue"].setText(" ")
 
 	def updateConfigList(self):
-		pfslist = [ (-1,_("None")) ]
-		pf43list = [ (-1,_("Disabled")) ]
-		pf169list = [ (-1,_("Disabled")) ]
+		pfslist = [(-1,_("None"))]
+		pf43list = [(-1,_("Disabled"))]
+		pf169list = [(-1,_("Disabled"))]
 		pfs = config.plugins.VCS.profiles
 		for x in range(len(pfs)):
 			pfslist.append((x, pfs[x].name.value))
@@ -462,7 +462,7 @@ class VcsProfileSetup(ConfigListScreen, Screen):
 		pass
 
 	def createSetup(self):
-		list = [ ]
+		list = []
 		list.append(getConfigListEntry(_("Profile Name"), self.profile.name))
 		list.append(getConfigListEntry(_("Enable Profile"), self.profile.enabled))
 		if _stretch:
@@ -689,7 +689,7 @@ class VcsInfoBar:
 			else:
 				self.switchMode(0)
 		self.lastKey = None
-		self.hotkeys = { }
+		self.hotkeys = {}
 		for x in VcsInfoBarKeys:
 			self.hotkeys[x[0]] = [KEYIDS[key] for key in x[2]]
 		if infobar:
@@ -731,9 +731,9 @@ class VcsInfoBar:
 		if config.plugins.VCS.default.value != -1 and not config.plugins.VCS.default.value in range(config.plugins.VCS.pfs_count.value):
 			if self.defaultMode is None:
 				self.defaultMode = InitVcsProfile(name=_("Default Mode"))
-			modeslist = [ self.defaultMode ]
+			modeslist = [self.defaultMode]
 		else:
-			modeslist = [ ]
+			modeslist = []
 		for x in range(config.plugins.VCS.pfs_count.value):
 			if config.plugins.VCS.profiles[x].enabled.value:
 				modeslist.append(config.plugins.VCS.profiles[x])
@@ -755,8 +755,8 @@ class VcsInfoBar:
 		self.session.open(VcsSetupScreen)
 
 	def showChoiceBox(self):
-		modeslist = [ ]
-		keyslist = [ ]
+		modeslist = []
+		keyslist = []
 		y = 0
 		for x in range(config.plugins.VCS.pfs_count.value):
 			if config.plugins.VCS.profiles[x].enabled.value and config.plugins.VCS.enabled.value:
@@ -782,8 +782,8 @@ class VcsChoiseList:
 	def __init__(self, session):
 		self.session = session
 		self.msgbox = None
-		modeslist = [ ]
-		keyslist = [ ]
+		modeslist = []
+		keyslist = []
 		y = 0
 		for x in range(config.plugins.VCS.pfs_count.value):
 			if config.plugins.VCS.profiles[x].enabled.value and config.plugins.VCS.enabled.value:
@@ -901,11 +901,11 @@ class AutoVCS(Screen):
 				info = service and service.info()
 				if info:
 					aspect = info.getInfo(iServiceInformation.sAspect)
-					if aspect in ( 1, 2, 5, 6, 9, 0xA, 0xD, 0xE ): # aspect = "4:3"
+					if aspect in (1, 2, 5, 6, 9, 0xA, 0xD, 0xE): # aspect = "4:3"
 						if auto_service_43 != -1:
 							if config.plugins.VCS.profiles[auto_service_43].enabled.value:
 								self.AutoSwitch(config.plugins.VCS.profiles[auto_service_43])
-					elif aspect in ( 3, 4, 7, 8, 0xB, 0xC, 0xF, 0x10 ): # aspect = "16:9"
+					elif aspect in (3, 4, 7, 8, 0xB, 0xC, 0xF, 0x10): # aspect = "16:9"
 						apply = False
 						if auto_service_169 != -1:
 							if config.plugins.VCS.profiles[auto_service_169].enabled.value:

@@ -117,7 +117,7 @@ def DVDPlayerInit():
 		baseDVDPlayer__init__ = DVDPlayer.__init__
 	DVDPlayer.__init__ = DVDPlayer__init__
 
-def DVDPlayer__init__(self, session, dvd_device=None, dvd_filelist=[ ], args=None):
+def DVDPlayer__init__(self, session, dvd_device=None, dvd_filelist=[], args=None):
 	baseDVDPlayer__init__(self, session, dvd_device, dvd_filelist, args)
 	if config.plugins.VCS.dvd_menu.value:
 		def showVCS():
@@ -132,7 +132,7 @@ baseMediaPlayer__init__ = None
 baseMoviePlayer__init__ = None
 
 def MediaPlayerInit():
-	global baseMediaPlayer__init__ , baseMoviePlayer__init__ 
+	global baseMediaPlayer__init__, baseMoviePlayer__init__ 
 	action = None
 	try:
 		from Plugins.Extensions.MediaPlayer.plugin import MoviePlayer
@@ -217,7 +217,7 @@ def getBoolean(self):
 
 def autostart(reason, **kwargs):
 	if reason == 0:
-		global baseInfoBar__init__ , auto_vcs, base_setSeekState, baseServiceInfo_getBoolean, origChannelContextMenu__init__, vcsinfobar
+		global baseInfoBar__init__, auto_vcs, base_setSeekState, baseServiceInfo_getBoolean, origChannelContextMenu__init__, vcsinfobar
 		if config.plugins.VCS.enabled.value:
 			if config.plugins.VCS.hotkey.value != "none":
 				from Screens.InfoBar import InfoBar

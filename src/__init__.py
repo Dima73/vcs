@@ -23,7 +23,7 @@ import gettext
 
 PLUGIN_NAME = "VCS"
 PLUGIN_VERSION = "2.9"
-PLUGIN_PATH = os.path.dirname( __file__ )
+PLUGIN_PATH = os.path.dirname(__file__)
 
 def localeInit():
 	os.environ["LANGUAGE"] = language.getLanguage()[:2]
