@@ -1,7 +1,7 @@
 #
 # Video ClipModes Switcher Plugin for Enigma2
 # Coded by vlamo (c) 2012
-# 
+#
 # This module is free software; you can redistribute it and/or modify it under
 # the terms of the GNU Lesser General Public License as published by the Free
 # Software Foundation; either version 2 of the License, or (at your option) any
@@ -77,12 +77,12 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 		<widget source="profiles" render="Listbox" position="10,220" size="600,230" zPosition="1" >
 			<convert type="TemplatedMultiContent">
 				{"templates":
-					{"default": (45, [ 
+					{"default": (45, [
 						MultiContentEntryText(pos=(50, 0),  size=(200, 45), font=0, flags=RT_HALIGN_LEFT|RT_VALIGN_CENTER|RT_WRAP, text=1),
 						MultiContentEntryText(pos=(260, 0), size=(320, 45), font=1, flags=RT_HALIGN_LEFT|RT_VALIGN_CENTER|RT_WRAP, text=2),
 						MultiContentEntryPixmapAlphaTest(pos=(12, 9), size=(25, 24), png=3),
 					], True, "showOnDemand"),
-					"notselected": (45, [ 
+					"notselected": (45, [
 						MultiContentEntryText(pos=(50, 0),  size=(200, 45), font=0, flags=RT_HALIGN_LEFT|RT_VALIGN_CENTER|RT_WRAP, text=1),
 						MultiContentEntryText(pos=(260, 0), size=(320, 45), font=1, flags=RT_HALIGN_LEFT|RT_VALIGN_CENTER|RT_WRAP, text=2),
 						MultiContentEntryPixmapAlphaTest(pos=(12, 9), size=(25, 24), png=3),
@@ -125,12 +125,12 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 				"down": self.keyDown,
 				"ok": self.keyOK,
 			}, -2)
-		
+
 		self.onClose.append(self.__closed)
 		self.onLayoutFinish.append(self.__layoutFinished)
 		self.onShown.append(self.updateButtonState)
 		self.prev_ext_menu = config.plugins.VCS.ext_menu.value
-		
+
 	def __layoutFinished(self):
 		self["config"].instance.setSelectionEnable(True)
 		self["profiles"].style = "notselected"
@@ -369,7 +369,7 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 		elif self.focus == self.FOCUS_LIST:
 			self["profiles"].selectNext()
 		self.updateButtonState()
-		
+
 	def showExamples(self):
 		if not _clipping or config.plugins.VCS.dont_use_clip.value:
 			return
@@ -904,7 +904,7 @@ class AutoVCS(Screen):
 			ref = self.session.nav.getCurrentlyPlayingServiceReference()
 			if ref:
 				str_service = ref.toString()
-				stream_service = '%3a//' in str_service 
+				stream_service = '%3a//' in str_service
 				movie_service = str_service.rsplit(":", 1)[1].startswith("/")
 				if stream_service or movie_service:
 					action = config.plugins.movieaspect.enabled.value

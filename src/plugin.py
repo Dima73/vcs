@@ -137,7 +137,7 @@ baseMoviePlayer__init__ = None
 
 
 def MediaPlayerInit():
-	global baseMediaPlayer__init__, baseMoviePlayer__init__ 
+	global baseMediaPlayer__init__, baseMoviePlayer__init__
 	action = None
 	try:
 		from Plugins.Extensions.MediaPlayer.plugin import MoviePlayer
