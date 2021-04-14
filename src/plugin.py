@@ -96,7 +96,7 @@ config.plugins.VCS.pfs_count = ConfigInteger(0)
 config.plugins.VCS.profiles = ConfigSubList()
 if config.plugins.VCS.pfs_count.value:
 	for x in range(config.plugins.VCS.pfs_count.value):
-		config.plugins.VCS.profiles.append(InitVcsProfile(name=_("Profile %d")%(x+1)))
+		config.plugins.VCS.profiles.append(InitVcsProfile(name=_("Profile %d") % (x + 1)))
 else:
 	config.plugins.VCS.profiles.append(InitVcsProfile(name=_("Default Profile")))
 	config.plugins.VCS.pfs_count.value = 1
@@ -266,7 +266,7 @@ def VCSChannelContextMenu__init__(self, session, csel):
 		current_sel_flags = current.flags
 		inBouquetRootList = current_root and current_root.getPath().find('FROM BOUQUET "bouquets.') != -1
 		inBouquet = csel.getMutableList() is not None
-		isPlayable = not (current_sel_flags & (eServiceReference.isMarker|eServiceReference.isDirectory|eServiceReference.isGroup))
+		isPlayable = not (current_sel_flags & (eServiceReference.isMarker | eServiceReference.isDirectory | eServiceReference.isGroup))
 		self.current_ref = session.nav.getCurrentlyPlayingServiceReference()
 		if isPlayable and current and current.valid() and not current_sel_path:
 			str_service = current.toString()
@@ -377,7 +377,7 @@ def Plugins(**kwargs):
 	if config.plugins.VCS.ext_menu.value:
 		return [PluginDescriptor(where=[PluginDescriptor.WHERE_SESSIONSTART,PluginDescriptor.WHERE_AUTOSTART], fnc=autostart),
 			PluginDescriptor(name=PLUGIN_NAME, description=desc, where=PluginDescriptor.WHERE_PLUGINMENU, icon="vcs.png", fnc=main),
-			PluginDescriptor(name=_('%s:Choise List')%(PLUGIN_NAME), description=desc, where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=show_choisebox)]
+			PluginDescriptor(name=_('%s:Choise List') % (PLUGIN_NAME), description=desc, where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=show_choisebox)]
 	else:
 		return [PluginDescriptor(where=[PluginDescriptor.WHERE_SESSIONSTART,PluginDescriptor.WHERE_AUTOSTART], fnc=autostart),
 			PluginDescriptor(name=PLUGIN_NAME, description=desc, where=PluginDescriptor.WHERE_PLUGINMENU, icon="vcs.png", fnc=main)]
