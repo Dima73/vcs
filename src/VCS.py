@@ -98,7 +98,7 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 
-		for btn in ("red","green","yellow","blue"):
+		for btn in ("red", "green", "yellow", "blue"):
 			self["key_" + btn] = Button(" ")
 
 		ConfigListScreen.__init__(self, [])
@@ -157,7 +157,7 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 				self["key_yellow"].setText(self["profiles"].index > 0 and _("Move Up") or " ")
 				self["key_blue"].setText(self["profiles"].index < len(self.pfsList) - 1 and _("Move Down") or " ")
 			else:
-				for btn in ("key_red","key_yellow","key_blue"):
+				for btn in ("key_red", "key_yellow", "key_blue"):
 					self[btn].setText(" ")
 		else:
 			self["key_red"].setText(_("Exit"))
@@ -165,9 +165,9 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 			self["key_blue"].setText(" ")
 
 	def updateConfigList(self):
-		pfslist = [(-1,_("None"))]
-		pf43list = [(-1,_("Disabled"))]
-		pf169list = [(-1,_("Disabled"))]
+		pfslist = [(-1, _("None"))]
+		pf43list = [(-1, _("Disabled"))]
+		pf169list = [(-1, _("Disabled"))]
 		pfs = config.plugins.VCS.profiles
 		for x in range(len(pfs)):
 			pfslist.append((x, pfs[x].name.value))
@@ -374,7 +374,7 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 		if os.path.exists(examples_sh):
 			try:
 				os.chmod(examples_sh, 0755)
-				self.session.open(Console,_("Examples:"),["%s" % examples_sh])
+				self.session.open(Console, _("Examples:"), ["%s" % examples_sh])
 			except:
 				pass
 
@@ -431,7 +431,7 @@ class VcsProfileSetup(ConfigListScreen, Screen):
 
 	def keyOk(self):
 		cur = self["config"].getCurrent()
-		if cur[1] in (self.clip.X,self.clip.Y,self.clip.W,self.clip.H):
+		if cur[1] in (self.clip.X, self.clip.Y, self.clip.W, self.clip.H):
 			from Components.Input import Input
 			from Screens.InputBox import InputBox
 			from Tools.BoundFunction import boundFunction
@@ -449,13 +449,13 @@ class VcsProfileSetup(ConfigListScreen, Screen):
 		self.clip.Y = ConfigSlider(default=pf.cliprect.value[1], increment=5, limits=(0, 575))
 		self.clip.W = ConfigSlider(default=pf.cliprect.value[2], increment=5, limits=(0, 720))
 		self.clip.H = ConfigSlider(default=pf.cliprect.value[3], increment=5, limits=(0, 576))
-		self.pf_stretch = ConfigSelection([("0",_("no")), ("1", _("yes"))], default=pf.stretch.value)
+		self.pf_stretch = ConfigSelection([("0", _("no")), ("1", _("yes"))], default=pf.stretch.value)
 		self.pf_aspect = ConfigSelection([(0, _("4:3 Letterbox")), (1, _("4:3 PanScan")), (2, _("16:9")), (3, _("16:9 always")), (4, _("16:10 Letterbox")), (5, _("16:10 PanScan")), (6, _("16:9 Letterbox"))], default=pf.aspect.value)
 		self.pf_aspect.addNotifier(self.aspectSettingChanged)
 		if _stretch:
 			self.pf_stretch.addNotifier(self.stretchSettingChanged)
 		if _clipping and not config.plugins.VCS.dont_use_clip.value:
-			for elem in [self.clip.X,self.clip.Y,self.clip.W,self.clip.H]:
+			for elem in [self.clip.X, self.clip.Y, self.clip.W, self.clip.H]:
 				elem.addNotifier(self.videoSettingChanged)
 
 	def newConfig(self):
@@ -477,7 +477,7 @@ class VcsProfileSetup(ConfigListScreen, Screen):
 		self["config"].l.setList(list)
 
 	def save(self):
-		self.profile.cliprect.value = [self.clip.X.value,self.clip.Y.value,self.clip.W.value,self.clip.H.value]
+		self.profile.cliprect.value = [self.clip.X.value, self.clip.Y.value, self.clip.W.value, self.clip.H.value]
 		self.profile.stretch.value = self.pf_stretch.value
 		self.profile.aspect.value = self.pf_aspect.value
 		self.profile.save()
@@ -504,13 +504,13 @@ class VcsProfileSetup(ConfigListScreen, Screen):
 			self.clip.H.value = 576 - self.clip.Y.value
 		if "config" in self:
 			self["config"].instance.invalidate()
-		setClipRect([self.clip.X.value,self.clip.Y.value,self.clip.W.value,self.clip.H.value])
+		setClipRect([self.clip.X.value, self.clip.Y.value, self.clip.W.value, self.clip.H.value])
 		self.updateHeaderText()
 
 	def updateHeaderText(self):
 		if "header" in self:
 			if _clipping and not config.plugins.VCS.dont_use_clip.value:
-				self["header"].setText("%s\n[%d, %d, %d, %d]" % (getAspectString(self.pf_aspect.value),self.clip.X.value,self.clip.Y.value,self.clip.W.value,self.clip.H.value))
+				self["header"].setText("%s\n[%d, %d, %d, %d]" % (getAspectString(self.pf_aspect.value), self.clip.X.value, self.clip.Y.value, self.clip.W.value, self.clip.H.value))
 
 def getAspect():
 	if not oe_mode and hasattr(newAVSwitch, 'getAspectRatioSetting'):
@@ -574,8 +574,8 @@ def setStretch(stretchnum):
 		pass
 
 def getClipRect():
-	result = [0,0,720,576]
-	for (n,f) in enumerate(["left","top","width","height"]):
+	result = [0, 0, 720, 576]
+	for (n, f) in enumerate(["left", "top", "width", "height"]):
 		try:
 			fd = open("/proc/stb/vmpeg/0/clip_%s" % (f), "r")
 			result[n] = int("0X%s" % (fd.readline().strip()), 16)
@@ -585,7 +585,7 @@ def getClipRect():
 	return result
 
 def setClipRect(rectlist):
-	for (n,f) in enumerate(["left","top","width","height"]):
+	for (n, f) in enumerate(["left", "top", "width", "height"]):
 		try:
 			fd = open("/proc/stb/vmpeg/0/clip_%s" % (f), "w")
 			fd.write('%X' % rectlist[n])
@@ -615,9 +615,9 @@ def InitVcsProfile(profile=None, name=""):
 		profile.name.value = name
 		profile.name.save()
 	profile.enabled = ConfigYesNo(default=True)
-	profile.stretch = ConfigSelection([("0",_("no")), ("1", _("yes"))], default="0")
+	profile.stretch = ConfigSelection([("0", _("no")), ("1", _("yes"))], default="0")
 	profile.aspect = ConfigInteger(2)
-	profile.cliprect = ConfigPosition([0,0,720,576], (719,575,720,576))
+	profile.cliprect = ConfigPosition([0, 0, 720, 576], (719, 575, 720, 576))
 	return profile
 
 class VcsMessageBox(Screen):
@@ -645,16 +645,16 @@ class VcsMessageBox(Screen):
 
 
 VcsInfoBarKeys = [
-	["none",_("NONE"),["KEY_RESERVED"]],
-	["Green",_("GREEN"),["KEY_GREEN"]],
-	["Yellow",_("YELLOW"),["KEY_YELLOW"]],
-	["Radio",_("RADIO"),["KEY_RADIO"]],
-	["Text",_("TEXT"),["KEY_TEXT"]],
-	["Tv",_("TV"),["KEY_TV"]],
-	["Help",_("HELP"),["KEY_HELP"]],
-	["TextHelp",_("TEXT / HELP"),["KEY_HELP","KEY_TEXT"]],
-	["History",_("< / >"),["KEY_NEXT","KEY_PREVIOUS"]],
-	["Bouquet",_("BOUQUET- / BOUQUET+"),["KEY_CHANNELUP","KEY_CHANNELDOWN"]],
+	["none", _("NONE"), ["KEY_RESERVED"]],
+	["Green", _("GREEN"), ["KEY_GREEN"]],
+	["Yellow", _("YELLOW"), ["KEY_YELLOW"]],
+	["Radio", _("RADIO"), ["KEY_RADIO"]],
+	["Text", _("TEXT"), ["KEY_TEXT"]],
+	["Tv", _("TV"), ["KEY_TV"]],
+	["Help", _("HELP"), ["KEY_HELP"]],
+	["TextHelp", _("TEXT / HELP"), ["KEY_HELP", "KEY_TEXT"]],
+	["History", _("< / >"), ["KEY_NEXT", "KEY_PREVIOUS"]],
+	["Bouquet", _("BOUQUET- / BOUQUET+"), ["KEY_CHANNELUP", "KEY_CHANNELDOWN"]],
 ]
 
 from keyids import KEYIDS
@@ -764,7 +764,7 @@ class VcsInfoBar:
 				modeslist.append(('%s (%s %s)' % (pf.name.value, getAspectString(pf.aspect.value), _clipping and not config.plugins.VCS.dont_use_clip.value and pf.cliprect.value or ""), x, y))
 				keyslist.append(x < 9 and str(x + 1) or x == 9 and '0' or '')
 				y += 1
-		modeslist.append((_('Call %s plugin') % (PLUGIN_NAME),-1))
+		modeslist.append((_('Call %s plugin') % (PLUGIN_NAME), -1))
 		keyslist.append('blue')
 		from Screens.ChoiceBox import ChoiceBox
 		dlg = self.session.openWithCallback(self.choiceCallback, ChoiceBox, list=modeslist, keys=keyslist, selection=self.currentMode)
@@ -791,7 +791,7 @@ class VcsChoiseList:
 				modeslist.append(('%s (%s %s)' % (pf.name.value, getAspectString(pf.aspect.value), _clipping and not config.plugins.VCS.dont_use_clip.value and pf.cliprect.value or ""), x, y))
 				keyslist.append(x < 9 and str(x + 1) or x == 9 and '0' or '')
 				y += 1
-		modeslist.append((_('Call %s plugin') % (PLUGIN_NAME),-1))
+		modeslist.append((_('Call %s plugin') % (PLUGIN_NAME), -1))
 		keyslist.append('blue')
 		from Screens.ChoiceBox import ChoiceBox
 		dlg = self.session.openWithCallback(self.choiceCallback, ChoiceBox, list=modeslist, keys=keyslist)

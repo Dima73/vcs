@@ -71,8 +71,8 @@ from VCS import InitVcsProfile, VcsInfoBar, VcsSetupScreen, VcsInfoBarKeys, VcsC
 config.plugins.VCS = ConfigSubsection()
 config.plugins.VCS.enabled = ConfigEnableDisable(True)
 config.plugins.VCS.restart_after_standby = ConfigYesNo(False)
-config.plugins.VCS.hotkey = ConfigSelection([(x[0],x[1]) for x in VcsInfoBarKeys], "none")
-config.plugins.VCS.hkaction = ConfigSelection([("switch",_("switch profiles")),("choise",_("show choise box"))], "switch")
+config.plugins.VCS.hotkey = ConfigSelection([(x[0], x[1]) for x in VcsInfoBarKeys], "none")
+config.plugins.VCS.hkaction = ConfigSelection([("switch", _("switch profiles")), ("choise", _("show choise box"))], "switch")
 config.plugins.VCS.dont_use_clip = ConfigYesNo(default=BOX_NAME.startswith('et8500') and True or False)
 if not BOX_NAME.startswith('et') and config.plugins.VCS.dont_use_clip.value:
 	config.plugins.VCS.dont_use_clip.value = False
@@ -81,7 +81,7 @@ config.plugins.VCS.ext_menu = ConfigYesNo(False)
 config.plugins.VCS.dvd_menu = ConfigYesNo(False)
 config.plugins.VCS.media_player = ConfigYesNo(False)
 config.plugins.VCS.vu_avc43 = ConfigYesNo(False)
-config.plugins.VCS.vu_start_video = ConfigSelection([("no",_("no")),("yes",_("yes")), ("yes_except",_("yes, except '4:3 PanScan'")),("4_3_letterbox",_("use ") + _("Letterbox")),("4_3_panscan",_("use ") + _("PanScan"))], "no")
+config.plugins.VCS.vu_start_video = ConfigSelection([("no", _("no")), ("yes", _("yes")), ("yes_except", _("yes, except '4:3 PanScan'")), ("4_3_letterbox", _("use ") + _("Letterbox")), ("4_3_panscan", _("use ") + _("PanScan"))], "no")
 if BOX_MODEL != "vuplus" or not config.plugins.VCS.enabled.value:
 	config.plugins.VCS.vu_start_video.value = "no"
 	config.plugins.VCS.vu_start_video.save()
@@ -89,9 +89,9 @@ if BOX_MODEL != "vuplus" or not config.plugins.VCS.enabled.value:
 	config.plugins.VCS.vu_avc43.save()
 config.plugins.VCS.autoswitch_service_43 = ConfigInteger(-1)
 config.plugins.VCS.autoswitch_service_169 = ConfigInteger(-1)
-config.plugins.VCS.delay_switch_profile = ConfigSelection([(str(x),str(x)) for x in range(21)], "3")
+config.plugins.VCS.delay_switch_profile = ConfigSelection([(str(x), str(x)) for x in range(21)], "3")
 config.plugins.VCS.default = ConfigInteger(-1)
-config.plugins.VCS.msgtime = ConfigSelection([(str(x),str(x)) for x in range(11)], "3")
+config.plugins.VCS.msgtime = ConfigSelection([(str(x), str(x)) for x in range(11)], "3")
 config.plugins.VCS.pfs_count = ConfigInteger(0)
 config.plugins.VCS.profiles = ConfigSubList()
 if config.plugins.VCS.pfs_count.value:
@@ -272,7 +272,7 @@ def VCSChannelContextMenu__init__(self, session, csel):
 			str_service = current.toString()
 			if '%3a//' not in str_service and not str_service.rsplit(":", 1)[1].startswith("/"):
 				if eDVBDB.getInstance().getFlag(eServiceReference(str_service)) & FLAG_SERVICE_43_AVC:
-					self["menu"].list.insert(8, ChoiceEntryComponent(text=(_("Unmark service as 4:3 AVC/MPEG4"), boundFunction(self.removeFlag43SDservice,1)), key="dummy"))
+					self["menu"].list.insert(8, ChoiceEntryComponent(text=(_("Unmark service as 4:3 AVC/MPEG4"), boundFunction(self.removeFlag43SDservice, 1)), key="dummy"))
 				elif config.plugins.VCS.vu_avc43.value and self.current_ref and self.current_ref == current:
 					service = session.nav.getCurrentService()
 					if service:
@@ -281,7 +281,7 @@ def VCSChannelContextMenu__init__(self, session, csel):
 							aspect = info.getInfo(iServiceInformation.sAspect)
 							video_height = info.getInfo(iServiceInformation.sVideoHeight)
 							if 0 < video_height < 720 and info.getInfo(iServiceInformation.sVideoType) == 1 and aspect == 3:
-								self["menu"].list.insert(8, ChoiceEntryComponent(text=(_("Mark service as 4:3 AVC/MPEG4"), boundFunction(self.addFlag43SDservice,1)), key="dummy"))
+								self["menu"].list.insert(8, ChoiceEntryComponent(text=(_("Mark service as 4:3 AVC/MPEG4"), boundFunction(self.addFlag43SDservice, 1)), key="dummy"))
 
 def addFlag43SDservice(self, answer=None):
 	if NavigationInstance.instance:
@@ -375,9 +375,9 @@ def Plugins(**kwargs):
 	from Plugins.Plugin import PluginDescriptor
 	desc = _("video clipping switcher") + ": " + PLUGIN_VERSION
 	if config.plugins.VCS.ext_menu.value:
-		return [PluginDescriptor(where=[PluginDescriptor.WHERE_SESSIONSTART,PluginDescriptor.WHERE_AUTOSTART], fnc=autostart),
+		return [PluginDescriptor(where=[PluginDescriptor.WHERE_SESSIONSTART, PluginDescriptor.WHERE_AUTOSTART], fnc=autostart),
 			PluginDescriptor(name=PLUGIN_NAME, description=desc, where=PluginDescriptor.WHERE_PLUGINMENU, icon="vcs.png", fnc=main),
 			PluginDescriptor(name=_('%s:Choise List') % (PLUGIN_NAME), description=desc, where=PluginDescriptor.WHERE_EXTENSIONSMENU, fnc=show_choisebox)]
 	else:
-		return [PluginDescriptor(where=[PluginDescriptor.WHERE_SESSIONSTART,PluginDescriptor.WHERE_AUTOSTART], fnc=autostart),
+		return [PluginDescriptor(where=[PluginDescriptor.WHERE_SESSIONSTART, PluginDescriptor.WHERE_AUTOSTART], fnc=autostart),
 			PluginDescriptor(name=PLUGIN_NAME, description=desc, where=PluginDescriptor.WHERE_PLUGINMENU, icon="vcs.png", fnc=main)]
