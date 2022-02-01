@@ -337,13 +337,13 @@ def updateAspect(self):
 						aspectnum = 0
 					else:
 						aspectnum = 1
-					print "[VCS] force set video aspect ", vu_start_video
+					print("[VCS] force set video aspect ", vu_start_video)
 					setAspect(aspectnum)
 	else:
 		try:
 			policy = open("/proc/stb/video/policy2", "r").read()[:-1]
 			open("/proc/stb/video/policy2", "w").write(policy)
-			print "[VCS] force update video aspect ", policy
+			print("[VCS] force update video aspect ", policy)
 		except IOError:
 			pass
 
@@ -373,7 +373,7 @@ def setSeekState(self, state):
 			vu_start_video = config.plugins.VCS.vu_start_video.value
 			if config.plugins.VCS.enabled.value and vu_start_video != "no" and fix_aspect and not (vu_start_video == "yes_except" and config.av.policy_43.value == "panscan"):
 				if isMovieAspect_plugin() is not None and config.plugins.movieaspect.enabled.value != "no":
-					print "[VCS] stop - using setup plugin MovieAspect"
+					print("[VCS] stop - using setup plugin MovieAspect")
 					return
 				if not hasattr(self, "updateAspectTimer"):
 					self.updateAspectTimer = eTimer()

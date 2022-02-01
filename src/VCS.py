@@ -909,7 +909,7 @@ class AutoVCS(Screen):
 				if stream_service or movie_service:
 					action = config.plugins.movieaspect.enabled.value
 					if action == "yes" or (action == "video" and stream_service) or (action == "movie" and movie_service):
-						print "[VCS] stop - using setup plugin MovieAspect"
+						print("[VCS] stop - using setup plugin MovieAspect")
 						return
 		auto_service_43 = config.plugins.VCS.autoswitch_service_43.value
 		auto_service_169 = config.plugins.VCS.autoswitch_service_169.value
@@ -942,7 +942,7 @@ class AutoVCS(Screen):
 										self.policy2 = open("/proc/stb/video/policy2", "r").read()[:-1]
 										if self.policy2 != policy_43:
 											open("/proc/stb/video/policy2", "w").write(policy_43)
-											print "[VCS] force update wrong 16:9 AVC as 4:3 AVC", policy_43
+											print("[VCS] force update wrong 16:9 AVC as 4:3 AVC", policy_43)
 											try:
 												self.session.nav.pnav.navEvent(iPlayableService.evVideoSizeChanged)
 											except:
