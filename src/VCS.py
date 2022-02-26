@@ -375,7 +375,7 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 			return
 		if os.path.exists(examples_sh):
 			try:
-				os.chmod(examples_sh, 0755)
+				os.chmod(examples_sh, 0o755)
 				self.session.open(Console, _("Examples:"), ["%s" % examples_sh])
 			except:
 				pass
