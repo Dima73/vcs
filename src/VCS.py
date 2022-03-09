@@ -331,7 +331,6 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 			except:
 				HZhotkey = False
 			if HZhotkey and not WarningMessage:
-				global WarningMessage
 				WarningMessage = True
 				self.session.open(MessageBox, _("Warning!\n'HistoryZapSelector' plugin hotkey need disabled!\n"), MessageBox.TYPE_INFO, timeout=5)
 		if self.prev_ext_menu != config.plugins.VCS.ext_menu.value:
