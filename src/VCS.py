@@ -325,13 +325,13 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 			self.keyExit()
 
 	def keyExit(self):
+        global WarningMessage
 		if config.plugins.VCS.enabled.value and config.plugins.VCS.hotkey.value != "none":
 			try:
 				HZhotkey = config.plugins.SetupZapSelector.start.value and config.plugins.SetupZapSelector.replace_keys.value != "none"
 			except:
 				HZhotkey = False
 			if HZhotkey and not WarningMessage:
-				global WarningMessage
 				WarningMessage = True
 				self.session.open(MessageBox, _("Warning!\n'HistoryZapSelector' plugin hotkey need disabled!\n"), MessageBox.TYPE_INFO, timeout=5)
 		if self.prev_ext_menu != config.plugins.VCS.ext_menu.value:
