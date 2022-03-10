@@ -325,7 +325,7 @@ class VcsSetupScreen(Screen, ConfigListScreen):
 			self.keyExit()
 
 	def keyExit(self):
-        global WarningMessage
+		global WarningMessage
 		if config.plugins.VCS.enabled.value and config.plugins.VCS.hotkey.value != "none":
 			try:
 				HZhotkey = config.plugins.SetupZapSelector.start.value and config.plugins.SetupZapSelector.replace_keys.value != "none"
