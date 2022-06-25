@@ -18,7 +18,7 @@
 ###############################################################################
 
 from . import _, PLUGIN_NAME
-from plugin import BOX_MODEL, BOX_NAME
+from Plugins.Extensions.VCS.plugin import BOX_MODEL, BOX_NAME
 from Components.config import config, getConfigListEntry, ConfigSubsection, ConfigSelection, ConfigText, ConfigYesNo, ConfigInteger, ConfigPosition, ConfigSlider
 from Components.Button import Button
 from Components.Label import Label

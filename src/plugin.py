@@ -67,7 +67,7 @@ if not fileExists("/proc/stb/info/hwmodel") and fileExists("/proc/stb/info/boxty
 	except:
 		pass
 
-from VCS import InitVcsProfile, VcsInfoBar, VcsSetupScreen, VcsInfoBarKeys, VcsChoiseList, setAspect
+from Plugins.Extensions.VCS.VCS import InitVcsProfile, VcsInfoBar, VcsSetupScreen, VcsInfoBarKeys, VcsChoiseList, setAspect
 
 config.plugins.VCS = ConfigSubsection()
 config.plugins.VCS.enabled = ConfigEnableDisable(True)
@@ -241,7 +241,7 @@ def autostart(reason, **kwargs):
 					vcsinfobar = VcsInfoBar(kwargs["session"], NavigationInstance.instance)
 		if "session" in kwargs and auto_vcs is None:
 			session = kwargs["session"]
-			from VCS import AutoVCS
+			from Plugins.Extensions.VCS.VCS import AutoVCS
 			auto_vcs = AutoVCS(session)
 		if fileExists("/usr/lib/enigma2/python/Screens/DVD.pyo"):
 			try:
